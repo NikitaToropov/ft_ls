@@ -1,7 +1,10 @@
 #include "ft_ls.h"
 
-int		main()
+int			main(int argc, char **argv)
 {
-	ft_printf("Check Check Check Check Check\n");
-	return (1);
+	int		format;
+
+	format = parse_flags(argc, argv);
+//	run_program(format);
+	exit (0);
 }

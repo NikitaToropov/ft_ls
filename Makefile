@@ -10,7 +10,8 @@ INCLUDES_L = ./libft/includes
 INCLUDES_P = ./libft/ft_printf/includes
 
 # files
-C_FILES = main.c
+C_FILES = main.c \
+			parse_flags.c \
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))
@@ -24,15 +25,14 @@ LIBFT = $(DIR_L)/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(DIR_O) $(OBJS)
-	#gcc -Wall -Wextra -Werror $(OBJS) -I $(INCLUDES) -o $@
 	gcc -Wall -Wextra -Werror $(OBJS) -L $(DIR_L) -lft -o $@
 
 $(DIR_O):
 	mkdir -p objs
 
 $(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)
-	#gcc -Wall -Wextra -Werror -g -I $(INCLUDES) -L $(LIB_DIR) -lft -c $< -o $@
 	gcc -Wall -Wextra -Werror -g -I $(INCLUDES) -I $(INCLUDES_L) -I $(INCLUDES_P) -c $< -o $@
+	#gcc -g -I $(INCLUDES) -I $(INCLUDES_L) -I $(INCLUDES_P) -c $< -o $@
 
 $(LIBFT): force
 	make -C $(DIR_L)
