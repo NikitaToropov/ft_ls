@@ -1,0 +1,29 @@
+# Object files and dirs
+*.o
+*objs
+
+# Libraries
+*.a
+
+# Executabless
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# other
+.DS_Store
+.idea
+CMakeLists.txt
+cmake-build-debug
+a.out
+.vscode
+ft_ls
