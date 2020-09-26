@@ -13,17 +13,21 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
+# include <dirent.h>
+# include <sys/stat.h>
+
 # include "libft.h"
 # include "ft_printf.h"
 
 typedef struct		s_format
 {
-	unsigned int	set_of_flags;
-	char 			**argv;
-	int 			argc;
+	char			**files_or_dirs;
+	size_t			num_of_files_or_dirs;
+	size_t			flags;
+	char			**argv;
+	int				argc;
 }					t_format;
 
-int					parse_flags(int argc, char **argv);
-//void				run_program(int *format);
+void				init_format_struct(int argc, char **argv, t_format *format);
 
 #endif

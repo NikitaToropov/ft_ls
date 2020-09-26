@@ -18,6 +18,7 @@
 *.su
 *.idb
 *.pdb
+*.txt
 
 # other
 .DS_Store

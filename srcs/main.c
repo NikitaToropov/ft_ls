@@ -1,10 +1,12 @@
 #include "ft_ls.h"
 
-int			main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
-	int		format;
+	t_format	format;
 
-	format = parse_flags(argc, argv);
-//	run_program(format);
-	exit (0);
+	init_format_struct(argc, argv, &format);
+	ft_printf("%i\n", format.argc);
+	ft_printf("%s", format.argv[0]);
+//	parse_params(&format);
+	return (0);
 }
