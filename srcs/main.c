@@ -1,12 +1,14 @@
 #include "ft_ls.h"
 
-int				main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_format	format;
+	unsigned short flags;
+//	t_dirs *dirs;
 
-	init_format_struct(argc, argv, &format);
-	ft_printf("%i\n", format.argc);
-	ft_printf("%s", format.argv[0]);
-//	parse_params(&format);
+	(void)argc;
+	flags = flags_parser(argv);
+	ft_printf("%bi", flags);
+//	dirs_parser(argv);
+
 	return (0);
 }

@@ -15,19 +15,26 @@
 
 # include <dirent.h>
 # include <sys/stat.h>
+# include <pwd.h>
 
 # include "libft.h"
 # include "ft_printf.h"
 
-typedef struct		s_format
-{
-	char			**files_or_dirs;
-	size_t			num_of_files_or_dirs;
-	size_t			flags;
-	char			**argv;
-	int				argc;
-}					t_format;
+# define ILLEGAL_OPTON 1
+# define NO_SUCH_FILE_OR_DIR 2
+# define PERMISSION_DENIED 3
 
-void				init_format_struct(int argc, char **argv, t_format *format);
+# define L_FLAG 'l'
+# define R_UPP_FLAG 'R'
+# define A_FLAG 'a'
+# define R_FLAG 'r'
+# define T_FLAG 't'
+
+static char g_flags[] = {L_FLAG, R_UPP_FLAG, A_FLAG, R_FLAG, T_FLAG, '\0'};
+
+unsigned short flags_parser(char **argv);
+unsigned short get_flag_code(char flag);
+void error_handler(char error_code, char *arg);
+
 
 #endif
