@@ -29,10 +29,26 @@
 # define FALSE					0
 # define FLAGS					"lRart"
 
+typedef struct		s_date
+{
+	char			year;
+	char			month;
+	char			day;
+	char			hour;
+	char			minute;
+}					t_date;
+
 typedef struct		s_format
 {
-
+	char			file_mod[10];
+	unsigned short	num_of_links;
+	char			*owner_name;
+	char			*fie_group;
+	float			file_size;
+	struct s_date	date;
+	char			*name;
 }					t_format;
+
 typedef struct		s_dir
 {
 	char			*name;
