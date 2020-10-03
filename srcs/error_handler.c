@@ -6,7 +6,7 @@ void error_handler(char error_code, char *arg)
 	{
 		ft_printf("ls: illegal option -- %c\n"
 			"\"usage: ls [-%s] [file ...]\"\n",
-			*arg, g_flags);
+			*arg, FLAGS);
 		exit(1);
 	}
 	else if (error_code == NO_SUCH_FILE_OR_DIR)

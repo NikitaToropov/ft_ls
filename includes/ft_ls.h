@@ -20,21 +20,32 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-# define ILLEGAL_OPTON 1
-# define NO_SUCH_FILE_OR_DIR 2
-# define PERMISSION_DENIED 3
+#define MEMCHECK(x) if (!x) exit(2)
 
-# define L_FLAG 'l'
-# define R_UPP_FLAG 'R'
-# define A_FLAG 'a'
-# define R_FLAG 'r'
-# define T_FLAG 't'
+# define ILLEGAL_OPTON			1
+# define NO_SUCH_FILE_OR_DIR	2
+# define PERMISSION_DENIED		3
+# define TRUE					1
+# define FALSE					0
+# define FLAGS					"lRart"
 
-static char g_flags[] = {L_FLAG, R_UPP_FLAG, A_FLAG, R_FLAG, T_FLAG, '\0'};
+typedef struct		s_format
+{
 
-unsigned short flags_parser(char **argv);
-unsigned short get_flag_code(char flag);
-void error_handler(char error_code, char *arg);
+}					t_format;
+typedef struct		s_dir
+{
+	char			*name;
+	struct s_dir	*content;
+	struct s_dir	*next;
+	struct s_format	format;
+}					t_dir;
+
+unsigned short	flags_parser(char ***argv);
+unsigned short	get_flag_code(char flag);
+t_dir			*dirs_parser(char **argv, unsigned short flags);
+
+void			error_handler(char error_code, char *arg);
 
 
 #endif

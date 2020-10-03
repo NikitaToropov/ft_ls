@@ -7,9 +7,9 @@ unsigned short get_flag_code(char flag)
 
 	result = 0;
 	i = 0;
-	while(g_flags[i])
+	while(FLAGS[i])
 	{
-		if (flag == g_flags[i])
+		if (flag == FLAGS[i])
 			result |= 1 << i;
 		i++;
 	}
@@ -32,16 +32,16 @@ unsigned short parse_block(char *flags)
 	return (result);
 }
 
-unsigned short flags_parser(char **argv)
+unsigned short flags_parser(char ***argv)
 {
 	unsigned result;
 
 	result = 0;
-	argv++;
-	while(*argv && *argv[0] && *argv[0] == '-' && *argv[0])
+	(*argv)++;
+	while(**argv && **argv[0] && **argv[0] == '-' && **argv[0])
 	{
-		result |= parse_block(*argv + 1);
-		argv++;
+		result |= parse_block(**argv + 1);
+		(*argv)++;
 	}
 	return (result);
 }
