@@ -20,13 +20,19 @@
 # include "libft.h"
 # include "ft_printf.h"
 
-#define MEMCHECK(x) if (!x) exit(2)
+# define MEMCHECK(x) if (!x) exit(2)
 
 # define ILLEGAL_OPTON			1
 # define NO_SUCH_FILE_OR_DIR	2
 # define PERMISSION_DENIED		3
+
 # define TRUE					1
 # define FALSE					0
+
+# define MORE					0
+# define LESS					1
+# define EQUAL					2
+
 # define FLAGS					"lRart"
 
 typedef struct		s_date
@@ -36,6 +42,7 @@ typedef struct		s_date
 	char			day;
 	char			hour;
 	char			minute;
+	unsigned int	unix_time;
 }					t_date;
 
 typedef struct		s_format
@@ -54,14 +61,14 @@ typedef struct		s_dir
 	char			*name;
 	struct s_dir	*content;
 	struct s_dir	*next;
-	struct s_format	format;
+	struct s_format	description;
 }					t_dir;
 
 unsigned short	flags_parser(char ***argv);
 unsigned short	get_flag_code(char flag);
 t_dir			*dirs_parser(char **argv, unsigned short flags);
-
 void			error_handler(char error_code, char *arg);
+
 
 
 #endif
