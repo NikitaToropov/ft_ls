@@ -29,9 +29,8 @@
 # define TRUE					1
 # define FALSE					0
 
-# define MORE					0
-# define LESS					1
-# define EQUAL					2
+# define MORE					1
+# define LESS					-1
 
 # define FLAGS					"lRart"
 
@@ -64,11 +63,20 @@ typedef struct		s_dir
 	struct s_format	description;
 }					t_dir;
 
-unsigned short	flags_parser(char ***argv);
-unsigned short	get_flag_code(char flag);
-t_dir			*dirs_parser(char **argv, unsigned short flags);
-void			error_handler(char error_code, char *arg);
+unsigned short		flags_parser(char ***argv);
+unsigned short		get_flag_code(char flag);
+t_dir				*dirs_parser(char **argv, unsigned short flags);
+void				error_handler(char error_code, char *arg);
 
+char				compare_by_date(const t_dir *first, const t_dir *second);
+char				compare_by_date_reverse(const t_dir *first,
+				const t_dir *second);
+char				compare_lexicographic(const t_dir *first,
+				const t_dir *second);
+char				compare_lexicographic_reverse(const t_dir *first,
+				const t_dir *second);
+t_dir				*quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
+				char comparator(const t_dir *, const t_dir *));
 
 
 #endif

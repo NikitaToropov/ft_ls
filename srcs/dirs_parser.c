@@ -2,7 +2,7 @@
 
 t_dir *dirs_parser(char **argv, unsigned short flags)
 {
-	t_dir *root;
+	t_dir *head;
 
 	(void)argv;
 	(void)flags;
@@ -10,7 +10,7 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 		;
 	else
 		;
-//	get_content(root, flags);
-	root = NULL;
-	return (root);
+//	get_content(head, flags);
+	head = NULL;
+	return (head);
 }
