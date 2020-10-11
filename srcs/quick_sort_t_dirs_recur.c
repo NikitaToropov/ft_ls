@@ -52,7 +52,7 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	t_dir *pivot;
 	t_dir *tmp;
 
-	if (!head || head == end)
+	if (!head || head == end || !comparator)
 		return (head);
 	new_head = NULL;
 	new_end = NULL;
@@ -69,4 +69,9 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	}
 	pivot->next = quick_sort_t_dirs_recur(pivot->next, new_end, comparator);
 	return (new_head);
+}
+
+void sort_list_by(t_dir **head, char comparator(const t_dir *, const t_dir *))
+{
+	*head = quick_sort_t_dirs_recur(*head, get_tail(*head), comparator);
 }

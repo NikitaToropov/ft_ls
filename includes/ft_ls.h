@@ -52,7 +52,6 @@ typedef struct		s_format
 	char			*fie_group;
 	float			file_size;
 	struct s_date	date;
-	char			*name;
 }					t_format;
 
 typedef struct		s_dir
@@ -70,13 +69,14 @@ void				error_handler(char error_code, char *arg);
 
 char				compare_by_date(const t_dir *first, const t_dir *second);
 char				compare_by_date_reverse(const t_dir *first,
-				const t_dir *second);
+						const t_dir *second);
 char				compare_lexicographic(const t_dir *first,
-				const t_dir *second);
+						const t_dir *second);
 char				compare_lexicographic_reverse(const t_dir *first,
-				const t_dir *second);
-t_dir				*quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
-				char comparator(const t_dir *, const t_dir *));
-
+						const t_dir *second);
+void				push_front(t_dir **head, char *name);
+void				sort_list_by(t_dir **head,
+						char comparator(const t_dir *, const t_dir *));
+void				del_t_dirs_recur(t_dir **head);
 
 #endif

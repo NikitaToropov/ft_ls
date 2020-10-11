@@ -10,8 +10,13 @@ INCLUDES_L = ./libft/includes
 INCLUDES_P = ./libft/ft_printf/includes
 
 # files
-C_FILES = main.c \
-		format_struct_init_and_clear.c
+C_FILES = comparators.c \
+		dirs_parser.c \
+		error_handler.c \
+		flags_parser.c \
+		main.c \
+		quick_sort_t_dirs_recur.c \
+		t_dir_ops.c
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))
@@ -32,8 +37,7 @@ $(DIR_O):
 
 $(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)
 	gcc -Wall -Wextra -Werror -g -I $(INCLUDES) -I $(INCLUDES_L) -I $(INCLUDES_P) -c $< -o $@
-	#gcc -Wall -Wextra -Werror -g -c $< -o $@
-	#gcc -g -I $(INCLUDES) -I $(INCLUDES_L) -I $(INCLUDES_P) -c $<
+
 $(LIBFT): force
 	make -C $(DIR_L)
 
