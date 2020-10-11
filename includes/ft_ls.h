@@ -26,6 +26,10 @@
 # define NO_SUCH_FILE_OR_DIR	2
 # define PERMISSION_DENIED		3
 
+# define WRONG_NAME				-1
+
+# define SUCCESS				1
+# define FAILURE				0
 # define TRUE					1
 # define FALSE					0
 
@@ -57,16 +61,20 @@ typedef struct		s_format
 typedef struct		s_dir
 {
 	char			*name;
+	char			*path;
+	char			status;
 	struct s_dir	*content;
+	struct s_dir	*parent;
 	struct s_dir	*next;
 	struct s_format	description;
+	struct stat		stt;
 }					t_dir;
 
 unsigned short		flags_parser(char ***argv);
 unsigned short		get_flag_code(char flag);
 t_dir				*dirs_parser(char **argv, unsigned short flags);
 void				error_handler(char error_code, char *arg);
-
+char				*ft_pathjoin(char *first, char *second);
 char				compare_by_date(const t_dir *first, const t_dir *second);
 char				compare_by_date_reverse(const t_dir *first,
 						const t_dir *second);
@@ -74,7 +82,7 @@ char				compare_lexicographic(const t_dir *first,
 						const t_dir *second);
 char				compare_lexicographic_reverse(const t_dir *first,
 						const t_dir *second);
-void				push_front(t_dir **head, char *name);
+void				push_front(t_dir **head, char *name, t_dir *parent);
 void				sort_list_by(t_dir **head,
 						char comparator(const t_dir *, const t_dir *));
 void				del_t_dirs_recur(t_dir **head);

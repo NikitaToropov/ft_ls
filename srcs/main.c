@@ -4,6 +4,7 @@ int main(int argc, char **argv)
 {
 	unsigned short flags;
 	t_dir *head;
+	t_dir *tmp;
 //	DIR *for_freeing;
 
 	(void)argc;
@@ -14,11 +15,20 @@ int main(int argc, char **argv)
 //		ft_printf("NULL");
 //	else
 //		closedir(for_freeing);
-	del_t_dirs_recur(&head);
-	while (head)
+	tmp = head;
+	while (tmp)
 	{
-		ft_printf("%s\n", head->name);
-		head = head->next;
+		ft_printf("%s\n", tmp->path);
+		tmp = tmp->next;
 	}
+	del_t_dirs_recur(&head);
+	DIR *first_dir = opendir("srcs");
+	DIR *second_dir = opendir("include");
+
+	if (first_dir)
+		ft_printf("\n\nSRCS FD %d\n", first_dir->__dd_fd);
+	if (second_dir)
+		ft_printf("\n\nINCL FD %d\n", second_dir->__dd_fd);
+
 	return (0);
 }

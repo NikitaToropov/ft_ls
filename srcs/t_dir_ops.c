@@ -6,6 +6,8 @@ void del_t_dir(t_dir *node)
 		return;
 	if (node->name)
 		free(node->name);
+	if (node->path)
+		free(node->path);
 //	if (node->description.fie_group)
 //		free(node->description.fie_group);
 //	if (node->description.owner_name)
@@ -13,20 +15,24 @@ void del_t_dir(t_dir *node)
 	free(node);
 }
 
-t_dir *new_t_dir(char *name)
+t_dir *new_t_dir(char *name, t_dir *parent)
 {
 	t_dir *new;
 
 	MEMCHECK((new = ft_memalloc(sizeof(t_dir))));
-	new->name = name;
+	new->name = ft_strdup(name);
+	new->parent = parent;
+	new->path = (parent)
+			? ft_pathjoin(name, parent->path)
+			: ft_pathjoin(NULL, name);
 	return (new);
 }
 
-void push_front(t_dir **head, char *name)
+void push_front(t_dir **head, char *name, t_dir *parent)
 {
 	t_dir *new_node;
 
-	new_node = new_t_dir(name);
+	MEMCHECK((new_node = new_t_dir(name, parent)));
 	new_node->next = *head;
 	*head = new_node;
 }
@@ -38,7 +44,7 @@ void del_t_dirs_recur(t_dir **head)
 
 	curr = *head;
 	*head = NULL;
-	while (curr)
+	while(curr)
 	{
 		del_t_dirs_recur(&(curr->content));
 		tmp = curr;
