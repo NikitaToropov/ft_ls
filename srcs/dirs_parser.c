@@ -1,40 +1,60 @@
 #include "ft_ls.h"
 
-char dir_handler (t_dir *node, unsigned short flags)
+char is_dummy_dir(t_dir *node)
+{
+	if (node->parent)
+	{
+		if (ft_strcmp(node->name, ".") == 0
+			|| ft_strcmp(node->name, "..") == 0)
+			return (TRUE);
+	}
+	return (FALSE);
+}
+
+void dir_handler(t_dir *node, unsigned short flags)
 {
 	DIR *dir;
+	struct dirent *dirent;
 
-	(void)flags;
-		if ((dir = opendir(node->path)) == NULL)
+	(void) flags;
+	dirent = NULL;
+	if ((dir = opendir(node->path)))
+	{
+		while((dirent = readdir(dir)))
+			push_front(&(node->content), dirent->d_name, node);
+		closedir(dir);
+		sort_list_by(&(node->content), compare_lexicographic);
+		parse_format_recur(node->content, flags);
+	}
+	else
+		node->status = PERMISSION_DENIED;
+}
+
+char stat_handler(t_dir *node, unsigned short flags)
+{
+	(void) flags;
+
+	if (stat(node->path, &(node->stat)) != -1)
+		return (SUCCESS);
+	else
+	{
+		node->status = NO_SUCH_FILE_OR_DIR;
 		return (FAILURE);
-	closedir(dir);
-	return (SUCCESS);
+	}
 }
 
-char file_handler(t_dir *node, unsigned short flags)
-{
-	(void)flags;
-	(void)node;
-	return (SUCCESS);
-}
 
-void fill_curr(t_dir *node, unsigned short flags)
-{
-	if (dir_handler(node, flags) == SUCCESS
-	|| file_handler(node, flags) == SUCCESS)
-		return;
-	node->status = WRONG_NAME;
-	error_handler(NO_SUCH_FILE_OR_DIR, node->name);
-}
-
-void fill_format(t_dir *head, unsigned short flags)
+void parse_format_recur(t_dir *head, unsigned short flags)
 {
 	t_dir *curr;
 
 	curr = head;
-	while (curr)
+	while(curr)
 	{
-		fill_curr(curr, flags);
+		if (stat_handler(curr, flags) == SUCCESS)
+			if (S_ISDIR(curr->stat.st_mode)
+				&& is_dummy_dir(curr) == FALSE)
+				dir_handler(curr, flags);
 		curr = curr->next;
 	}
 }
@@ -43,20 +63,20 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 {
 	t_dir *head;
 
-	(void)argv;
-	(void)flags;
+	(void) argv;
+	(void) flags;
 	head = NULL;
 	if (*argv == NULL)
 		push_front(&head, ft_strdup("."), NULL);
 	else
 	{
-		while (*argv != NULL)
+		while(*argv != NULL)
 		{
 			push_front(&head, *argv, NULL);
 			argv++;
 		}
 		sort_list_by(&head, compare_lexicographic);
 	}
-//	fill_format(head, flags);
+	parse_format_recur(head, flags);
 	return (head);
 }

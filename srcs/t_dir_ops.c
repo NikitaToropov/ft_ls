@@ -22,9 +22,9 @@ t_dir *new_t_dir(char *name, t_dir *parent)
 	MEMCHECK((new = ft_memalloc(sizeof(t_dir))));
 	new->name = ft_strdup(name);
 	new->parent = parent;
-	new->path = (parent)
-			? ft_pathjoin(name, parent->path)
-			: ft_pathjoin(NULL, name);
+	new->path = ft_pathjoin((parent)
+							? parent->path
+							: NULL, name);
 	return (new);
 }
 

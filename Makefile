@@ -18,6 +18,7 @@ C_FILES = comparators.c \
 		quick_sort_t_dirs_recur.c \
 		t_dir_ops.c \
 		utils.c \
+		print_dir_structure.c \
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))

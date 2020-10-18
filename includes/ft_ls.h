@@ -67,7 +67,7 @@ typedef struct		s_dir
 	struct s_dir	*parent;
 	struct s_dir	*next;
 	struct s_format	description;
-	struct stat		stt;
+	struct stat		stat;
 }					t_dir;
 
 unsigned short		flags_parser(char ***argv);
@@ -86,5 +86,9 @@ void				push_front(t_dir **head, char *name, t_dir *parent);
 void				sort_list_by(t_dir **head,
 						char comparator(const t_dir *, const t_dir *));
 void				del_t_dirs_recur(t_dir **head);
+void				print_dirs_struct(t_dir *head, unsigned short flags);
+//void				dir_handler(t_dir *node, unsigned short flags);
+void				parse_format_recur(t_dir *head, unsigned short flags);
+char				is_dummy_dir(t_dir *node);
 
 #endif
