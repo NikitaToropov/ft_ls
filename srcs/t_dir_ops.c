@@ -37,18 +37,17 @@ void push_front(t_dir **head, char *name, t_dir *parent)
 	*head = new_node;
 }
 
-void del_t_dirs_recur(t_dir **head)
+void del_t_dirs_recur(t_dir *head)
 {
 	t_dir *curr;
 	t_dir *tmp;
 
-	curr = *head;
-	*head = NULL;
+	curr = head;
 	while(curr)
 	{
-		del_t_dirs_recur(&(curr->content));
+		del_t_dirs_recur(curr->content);
 		tmp = curr;
-		del_t_dir(tmp);
 		curr = curr->next;
+		del_t_dir(tmp);
 	}
 }

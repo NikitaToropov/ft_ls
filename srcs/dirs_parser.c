@@ -67,7 +67,7 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 	(void) flags;
 	head = NULL;
 	if (*argv == NULL)
-		push_front(&head, ft_strdup("."), NULL);
+		push_front(&head, ".", NULL);
 	else
 	{
 		while(*argv != NULL)

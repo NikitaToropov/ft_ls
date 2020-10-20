@@ -85,7 +85,7 @@ char				compare_lexicographic_reverse(const t_dir *first,
 void				push_front(t_dir **head, char *name, t_dir *parent);
 void				sort_list_by(t_dir **head,
 						char comparator(const t_dir *, const t_dir *));
-void				del_t_dirs_recur(t_dir **head);
+void				del_t_dirs_recur(t_dir *head);
 void				print_dirs_struct(t_dir *head, unsigned short flags);
 //void				dir_handler(t_dir *node, unsigned short flags);
 void				parse_format_recur(t_dir *head, unsigned short flags);
