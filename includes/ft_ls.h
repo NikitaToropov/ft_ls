@@ -60,6 +60,7 @@ typedef struct		s_format
 
 typedef struct		s_dir
 {
+	long int	content_size;
 	char			*name;
 	char			*path;
 	char			status;

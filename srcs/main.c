@@ -4,7 +4,6 @@ int main(int argc, char **argv)
 {
 	unsigned short flags;
 	t_dir *head;
-//	DIR *for_freeing;
 
 	(void) argc;
 	flags = flags_parser(&argv);

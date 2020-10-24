@@ -20,6 +20,7 @@ void dir_handler(t_dir *node, unsigned short flags)
 	dirent = NULL;
 	if ((dir = opendir(node->path)))
 	{
+		node->content_size = dir->__dd_size;
 		while((dirent = readdir(dir)))
 			push_front(&(node->content), dirent->d_name, node);
 		closedir(dir);
@@ -35,7 +36,9 @@ char stat_handler(t_dir *node, unsigned short flags)
 	(void) flags;
 
 	if (stat(node->path, &(node->stat)) != -1)
+	{
 		return (SUCCESS);
+	}
 	else
 	{
 		node->status = NO_SUCH_FILE_OR_DIR;

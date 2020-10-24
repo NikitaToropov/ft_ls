@@ -2,11 +2,14 @@
 
 void error_handler(char error_code, char *arg)
 {
+//	char *out;
+
 	if (error_code == ILLEGAL_OPTON)
 	{
-		ft_printf("ls: illegal option -- %c\n"
-			"\"usage: ls [-%s] [file ...]\"\n",
-			*arg, FLAGS);
+//		ft_printf("	ls: illegal option -- %c\n"
+//			"usage: ls [-%s] [file ...]\n",
+//			*arg, FLAGS);
+		perror("");
 		exit(1);
 	}
 	else if (error_code == NO_SUCH_FILE_OR_DIR)
