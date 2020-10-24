@@ -2,20 +2,27 @@
 
 void error_handler(char error_code, char *arg)
 {
-//	char *out;
-
 	if (error_code == ILLEGAL_OPTON)
 	{
-//		ft_printf("	ls: illegal option -- %c\n"
-//			"usage: ls [-%s] [file ...]\n",
-//			*arg, FLAGS);
-		perror("");
+		write(STDERR_FILENO, "ls: illegal option -- ", 22);
+		write(STDERR_FILENO, arg, 1);
+		write(STDERR_FILENO, "\nusage: ls [-", 13);
+		write(STDERR_FILENO, FLAGS, ft_strlen(FLAGS));
+		write(STDERR_FILENO, "] [file ...]\n", 13);
 		exit(1);
 	}
 	else if (error_code == NO_SUCH_FILE_OR_DIR)
-		ft_printf("ls: %s: No such file or directory\n", arg);
+	{
+		write(STDERR_FILENO, "ls: ", 4);
+		write(STDERR_FILENO, arg, ft_strlen(arg));
+		write(STDERR_FILENO, ": No such file or directory\n", 28);
+	}
 	else if (error_code == PERMISSION_DENIED)
-		ft_printf("ls: %s: Permission denied\n", arg);
+	{
+		write(STDERR_FILENO, "ls: ", 4);
+		write(STDERR_FILENO, arg, ft_strlen(arg));
+		write(STDERR_FILENO, " Permission denied\n", 19);
+	}
 	else
 		ft_printf("Dude something wrong in your code");
 }
