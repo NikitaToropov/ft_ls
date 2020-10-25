@@ -16,6 +16,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <pwd.h>
+# include <time.h>
 
 # include "libft.h"
 # include "ft_printf.h"
