@@ -36,6 +36,7 @@
 
 # define MORE					1
 # define LESS					-1
+# define SIX_MONTHS				15770000
 
 # define FLAGS					"lRart"
 
