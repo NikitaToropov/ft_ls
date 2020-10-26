@@ -36,8 +36,9 @@
 
 # define MORE					1
 # define LESS					-1
+# define SIX_MONTHS				15770000
 
-# define FLAGS					"lRart"
+# define FLAGS					"lRartU"
 
 typedef struct		s_date
 {
@@ -64,6 +65,7 @@ typedef struct		s_dir
 	long int	content_size;
 	char			*name;
 	char			*path;
+	char			date[13];
 	char			status;
 	struct s_dir	*content;
 	struct s_dir	*parent;
@@ -92,5 +94,6 @@ void				print_dirs_struct(t_dir *head, unsigned short flags);
 //void				dir_handler(t_dir *node, unsigned short flags);
 void				parse_format_recur(t_dir *head, unsigned short flags);
 char				is_dummy_dir(t_dir *node);
+void				fill_date_string(t_dir *node, unsigned short flags);
 
 #endif
