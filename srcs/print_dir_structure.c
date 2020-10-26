@@ -1,34 +1,15 @@
 #include "ft_ls.h"
 
-void print_date(t_dir *dir, unsigned short flags)
-{
-	char month_day_time[13];
-	char *full_date;
-	time_t current_time;
-
-	(void) flags;
-	full_date = ctime((const time_t *) &(dir->stat.st_mtime));
-	ft_strncpy(month_day_time, full_date + 4, 12);
-	month_day_time[12] = '\0';
-	time(&current_time);
-	if ((current_time - dir->stat.st_mtime) >= SIX_MONTHS)
-		ft_strncpy(month_day_time + 7, full_date + 19, 5);
-	ft_printf("%s", month_day_time);
-}
-
-
 void print_dir_description(t_dir *dir, unsigned short flags)
 {
 	(void) flags;
 	ft_printf("\n%s:\n%li\n", dir->path, dir->stat.st_blocks);
 }
 
-void print_content(t_dir *dir, unsigned short flags)
+void print_content(t_dir *node, unsigned short flags)
 {
-	(void) flags;
-	ft_printf("% 7u ", dir->stat.st_size); // 7 need to change later
-	print_date(dir, flags);
-	ft_printf(" %s\n", dir->name);
+	fill_date_string(node, flags);
+	ft_printf("% 7u %s %s\n", node->stat.st_size, node->date, node->name);
 }
 
 void print_dirs_struct_recur(t_dir *head, unsigned short flags)
@@ -83,7 +64,6 @@ void print_dirs_struct(t_dir *head, unsigned short flags)
 			else if (node->status == 0)
 			{
 				print_content(node, flags);
-//				ft_printf("\n");
 			}
 			node = node->next;
 		}
