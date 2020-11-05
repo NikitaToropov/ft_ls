@@ -10,7 +10,8 @@ void print_content(t_dir *node, unsigned short flags)
 {
 	fill_date_string(node, flags);
 	fill_group_name(node, flags);
-	ft_printf("%s %7u %s %s\n", node->group_info->gr_name, node->stat.st_size, node->date, node->name);
+	fill_owner_name(node, flags);
+	ft_printf("%s %s %7u %s %s\n", node->passwd->pw_name, node->group_info->gr_name, node->stat.st_size, node->date, node->name);
 }
 
 void print_dirs_struct_recur(t_dir *head, unsigned short flags)
