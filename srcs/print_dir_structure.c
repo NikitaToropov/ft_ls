@@ -9,7 +9,8 @@ void print_dir_description(t_dir *dir, unsigned short flags)
 void print_content(t_dir *node, unsigned short flags)
 {
 	fill_date_string(node, flags);
-	ft_printf("% 7u %s %s\n", node->stat.st_size, node->date, node->name);
+	fill_group_name(node, flags);
+	ft_printf("%s %7u %s %s\n", node->group_info->gr_name, node->stat.st_size, node->date, node->name);
 }
 
 void print_dirs_struct_recur(t_dir *head, unsigned short flags)
@@ -44,7 +45,7 @@ void print_dirs_struct(t_dir *head, unsigned short flags)
 	if (node->next == NULL)
 	{
 		if (S_ISDIR(node->stat.st_mode))
-			ft_printf("total %i\n", node->content_size);
+			ft_printf("total %i\n", node->total_size);
 		else if (node->status == 0)
 		{
 			print_content(node, flags);

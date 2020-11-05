@@ -17,6 +17,7 @@
 # include <sys/stat.h>
 # include <pwd.h>
 # include <time.h>
+# include <grp.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -62,7 +63,8 @@ typedef struct		s_format
 
 typedef struct		s_dir
 {
-	long int	content_size;
+	long int			total_size;
+	struct group	*group_info;
 	char			*name;
 	char			*path;
 	char			date[13];
@@ -95,5 +97,7 @@ void				print_dirs_struct(t_dir *head, unsigned short flags);
 void				parse_format_recur(t_dir *head, unsigned short flags);
 char				is_dummy_dir(t_dir *node);
 void				fill_date_string(t_dir *node, unsigned short flags);
+void				fill_group_name(t_dir *node, unsigned short flags);
+
 
 #endif
