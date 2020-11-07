@@ -34,7 +34,7 @@ char stat_handler(t_dir *node, unsigned short flags)
 {
 	(void) flags;
 
-	if (stat(node->path, &(node->stat)) != -1)
+	if (lstat(node->path, &(node->stat)) != -1)
 	{
 		return (SUCCESS);
 	}

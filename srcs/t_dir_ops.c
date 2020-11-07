@@ -1,18 +1,17 @@
 #include "ft_ls.h"
 
-void del_t_dir(t_dir *node)
+void del_t_dir(t_dir **node)
 {
-	if (!node)
+	if (!*node)
 		return;
-	if (node->name)
-		free(node->name);
-	if (node->path)
-		free(node->path);
-//	if (node->description.fie_group)
-//		free(node->description.fie_group);
-//	if (node->description.owner_name)
-//		free(node->description.owner_name);
-	free(node);
+	if ((*node)->name)
+		free((*node)->name);
+	if ((*node)->path)
+		free((*node)->path);
+	if ((*node)->sym_link)
+		free((*node)->sym_link);
+	free(*node);
+	*node = NULL;
 }
 
 t_dir *new_t_dir(char *name, t_dir *parent)
@@ -48,6 +47,6 @@ void del_t_dirs_recur(t_dir *head)
 		del_t_dirs_recur(curr->content);
 		tmp = curr;
 		curr = curr->next;
-		del_t_dir(tmp);
+		del_t_dir(&tmp);
 	}
 }

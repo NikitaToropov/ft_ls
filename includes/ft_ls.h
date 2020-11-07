@@ -40,6 +40,8 @@
 # define SIX_MONTHS				15770000
 
 # define FLAGS					"lRartU"
+# define SYM_LINK_ARROW			" -> "
+# define DEFAULT_BUFF_SIZE		16
 
 typedef struct		s_date
 {
@@ -64,17 +66,19 @@ typedef struct		s_format
 typedef struct		s_dir
 {
 	long int			total_size;
-	struct group	*group_info;
-	struct passwd	*passwd;
 	char			*name;
 	char			*path;
+	char			*sym_link;
 	char			date[13];
 	char			status;
 	struct s_dir	*content;
 	struct s_dir	*parent;
 	struct s_dir	*next;
 	struct s_format	description;
+	struct group	*group_info;
+	struct passwd	*passwd;
 	struct stat		stat;
+
 }					t_dir;
 
 unsigned short		flags_parser(char ***argv);
@@ -100,5 +104,6 @@ char				is_dummy_dir(t_dir *node);
 void				fill_date_string(t_dir *node, unsigned short flags);
 void				fill_group_name(t_dir *node, unsigned short flags);
 void				fill_owner_name(t_dir *node, unsigned short flags);
+void				fill_sym_link(t_dir *node, unsigned short flags);
 
 #endif
