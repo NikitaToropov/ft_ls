@@ -42,6 +42,7 @@
 # define FLAGS					"lRartU"
 # define SYM_LINK_ARROW			" -> "
 # define DEFAULT_BUFF_SIZE		16
+# define DEFULT_FILE_MOD		"-------- "
 
 typedef struct		s_date
 {
@@ -55,7 +56,6 @@ typedef struct		s_date
 
 typedef struct		s_format
 {
-	char			file_mod[10];
 	unsigned short	num_of_links;
 	char			*owner_name;
 	char			*fie_group;
@@ -71,6 +71,7 @@ typedef struct		s_dir
 	char			*sym_link;
 	char			date[13];
 	char			status;
+	char			file_mod[20];
 	struct s_dir	*content;
 	struct s_dir	*parent;
 	struct s_dir	*next;
@@ -105,5 +106,6 @@ void				fill_date_string(t_dir *node, unsigned short flags);
 void				fill_group_name(t_dir *node, unsigned short flags);
 void				fill_owner_name(t_dir *node, unsigned short flags);
 void				fill_sym_link(t_dir *node, unsigned short flags);
+void				fill_file_mod(t_dir *node, unsigned short flags);
 
 #endif

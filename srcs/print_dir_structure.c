@@ -12,7 +12,9 @@ void print_content(t_dir *node, unsigned short flags)
 	fill_group_name(node, flags);
 	fill_owner_name(node, flags);
 	fill_sym_link(node, flags);
-	ft_printf("%u %s %s %7lli %s %s%s\n",
+	fill_file_mod(node, flags);
+	ft_printf("%s %u %s %s %7lli %s %s%s\n",
+			  node->file_mod,
 			  node->stat.st_nlink,
 			  node->passwd->pw_name,
 			  node->group_info->gr_name,
