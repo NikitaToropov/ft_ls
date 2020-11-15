@@ -3,7 +3,9 @@
 void print_dir_description(t_dir *dir, unsigned short flags)
 {
 	(void) flags;
+	fill_total(dir);
 	ft_printf("\n%s:\n%lli\n", dir->path, dir->stat.st_blocks);
+	ft_printf("total %lli\n", dir->total_size);
 }
 
 void print_content(t_dir *node, unsigned short flags)
