@@ -18,6 +18,9 @@
 # include <pwd.h>
 # include <time.h>
 # include <grp.h>
+# include <sys/types.h>
+# include <sys/xattr.h>
+# include <sys/acl.h>
 
 # include "libft.h"
 # include "ft_printf.h"
