@@ -69,7 +69,7 @@ typedef struct		s_format
 typedef struct		s_dir
 {
 	long int			total_size;
-	long int 			max_width;
+	long int 			max_size;
 	char			*name;
 	char			*path;
 	char			*sym_link;
