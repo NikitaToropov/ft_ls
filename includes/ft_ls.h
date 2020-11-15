@@ -16,6 +16,11 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <pwd.h>
+# include <time.h>
+# include <grp.h>
+# include <sys/types.h>
+# include <sys/xattr.h>
+# include <sys/acl.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -35,8 +40,12 @@
 
 # define MORE					1
 # define LESS					-1
+# define SIX_MONTHS				15770000
 
-# define FLAGS					"lRart"
+# define FLAGS					"lRartU"
+# define SYM_LINK_ARROW			" -> "
+# define DEFAULT_BUFF_SIZE		16
+# define DEFULT_FILE_MOD		"-------- "
 
 typedef struct		s_date
 {
@@ -50,7 +59,6 @@ typedef struct		s_date
 
 typedef struct		s_format
 {
-	char			file_mod[10];
 	unsigned short	num_of_links;
 	char			*owner_name;
 	char			*fie_group;
@@ -60,15 +68,21 @@ typedef struct		s_format
 
 typedef struct		s_dir
 {
-	long int	content_size;
+	long int			total_size;
 	char			*name;
 	char			*path;
+	char			*sym_link;
+	char			date[13];
 	char			status;
+	char			file_mod[20];
 	struct s_dir	*content;
 	struct s_dir	*parent;
 	struct s_dir	*next;
 	struct s_format	description;
+	struct group	*group_info;
+	struct passwd	*passwd;
 	struct stat		stat;
+
 }					t_dir;
 
 unsigned short		flags_parser(char ***argv);
@@ -91,5 +105,10 @@ void				print_dirs_struct(t_dir *head, unsigned short flags);
 //void				dir_handler(t_dir *node, unsigned short flags);
 void				parse_format_recur(t_dir *head, unsigned short flags);
 char				is_dummy_dir(t_dir *node);
+void				fill_date_string(t_dir *node, unsigned short flags);
+void				fill_group_name(t_dir *node, unsigned short flags);
+void				fill_owner_name(t_dir *node, unsigned short flags);
+void				fill_sym_link(t_dir *node, unsigned short flags);
+void				fill_file_mod(t_dir *node, unsigned short flags);
 
 #endif

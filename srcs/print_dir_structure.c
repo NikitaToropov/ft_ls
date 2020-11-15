@@ -2,14 +2,27 @@
 
 void print_dir_description(t_dir *dir, unsigned short flags)
 {
-	(void )flags;
-	ft_printf("\n%s:\n%li\n", dir->path, dir->stat.st_blocks);
+	(void) flags;
+	ft_printf("\n%s:\n%lli\n", dir->path, dir->stat.st_blocks);
 }
 
-void print_content(t_dir *dir, unsigned short flags)
+void print_content(t_dir *node, unsigned short flags)
 {
-	(void) flags;
-	ft_printf("%-10u%s\n", dir->stat.st_size, dir->name);
+	fill_date_string(node, flags);
+	fill_group_name(node, flags);
+	fill_owner_name(node, flags);
+	fill_sym_link(node, flags);
+	fill_file_mod(node, flags);
+	ft_printf("%s %u %s %s %7lli %s %s%s\n",
+			  node->file_mod,
+			  node->stat.st_nlink,
+			  node->passwd->pw_name,
+			  node->group_info->gr_name,
+			  node->stat.st_size,
+			  node->date,
+			  node->name,
+			  (node->sym_link != NULL) ? node->sym_link : "");
+
 }
 
 void print_dirs_struct_recur(t_dir *head, unsigned short flags)
@@ -18,19 +31,18 @@ void print_dirs_struct_recur(t_dir *head, unsigned short flags)
 
 	(void) flags;
 	curr = head;
-	while(curr)
+	while (curr)
 	{
 		print_content(curr, flags);
 		curr = curr->next;
 	}
 	curr = head;
-	while(curr)
+	while (curr)
 	{
 		if (S_ISDIR(curr->stat.st_mode)
 			&& is_dummy_dir(curr) == FALSE)
 		{
 			print_dir_description(curr, flags);
-//			ft_printf("\n%s:\ntotal %u\n", curr->path, curr->stat.st_size);
 			print_dirs_struct_recur(curr->content, flags);
 		}
 		curr = curr->next;
@@ -45,7 +57,7 @@ void print_dirs_struct(t_dir *head, unsigned short flags)
 	if (node->next == NULL)
 	{
 		if (S_ISDIR(node->stat.st_mode))
-			ft_printf("total %i\n", node->content_size);
+			ft_printf("total %li\n", node->total_size);
 		else if (node->status == 0)
 		{
 			print_content(node, flags);
@@ -55,7 +67,7 @@ void print_dirs_struct(t_dir *head, unsigned short flags)
 	}
 	else
 	{
-		while(node)
+		while (node)
 		{
 			if (S_ISDIR(node->stat.st_mode))
 			{
@@ -65,7 +77,6 @@ void print_dirs_struct(t_dir *head, unsigned short flags)
 			else if (node->status == 0)
 			{
 				print_content(node, flags);
-				ft_printf("\n");
 			}
 			node = node->next;
 		}
