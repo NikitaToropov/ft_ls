@@ -2,8 +2,8 @@
 
 char compare_by_date(const t_dir *first, const t_dir *second)
 {
-	if (first->description.date.unix_time
-		> second->description.date.unix_time)
+	if (first->node_time
+		> second->node_time)
 		return (MORE);
 	else
 		return (LESS);
@@ -11,8 +11,8 @@ char compare_by_date(const t_dir *first, const t_dir *second)
 
 char compare_by_date_reverse(const t_dir *first, const t_dir *second)
 {
-	if (first->description.date.unix_time
-		> second->description.date.unix_time)
+	if (first->node_time
+		> second->node_time)
 		return (LESS);
 	else
 		return (MORE);

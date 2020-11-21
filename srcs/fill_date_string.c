@@ -15,4 +15,6 @@ void fill_date_string(t_dir *node, unsigned short flags)
 	time(&current_time);
 	if ((current_time - *node_time) >= SIX_MONTHS)
 		ft_strncpy(node->date + 7, full_date + 19, 5);
+	node->node_time = *node_time;
 }
+

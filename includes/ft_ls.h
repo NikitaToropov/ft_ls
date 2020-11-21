@@ -47,25 +47,6 @@
 # define DEFAULT_BUFF_SIZE		16
 # define DEFULT_FILE_MOD		"-------- "
 
-typedef struct		s_date
-{
-	char			year;
-	char			month;
-	char			day;
-	char			hour;
-	char			minute;
-	unsigned int	unix_time;
-}					t_date;
-
-typedef struct		s_format
-{
-	unsigned short	num_of_links;
-	char			*owner_name;
-	char			*fie_group;
-	float			file_size;
-	struct s_date	date;
-}					t_format;
-
 typedef struct		s_dir
 {
 	long int			total_size;
@@ -73,13 +54,13 @@ typedef struct		s_dir
 	char			*name;
 	char			*path;
 	char			*sym_link;
+	time_t			node_time;
 	char			date[13];
 	char			status;
 	char			file_mod[20];
 	struct s_dir	*content;
 	struct s_dir	*parent;
 	struct s_dir	*next;
-	struct s_format	description;
 	struct group	*group_info;
 	struct passwd	*passwd;
 	struct stat		stat;
