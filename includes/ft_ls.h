@@ -49,8 +49,8 @@
 
 typedef struct		s_dir
 {
-	long int			total_size;
-	long int 			max_size;
+	long int		total_size;
+	long int 		max_size;
 	char			*name;
 	char			*path;
 	char			*sym_link;
@@ -64,7 +64,6 @@ typedef struct		s_dir
 	struct group	*group_info;
 	struct passwd	*passwd;
 	struct stat		stat;
-
 }					t_dir;
 
 unsigned short		flags_parser(char ***argv);

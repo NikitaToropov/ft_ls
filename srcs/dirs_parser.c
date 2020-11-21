@@ -20,7 +20,7 @@ void dir_handler(t_dir *node, unsigned short flags)
 	dirent = NULL;
 	if ((dir = opendir(node->path)))
 	{
-		while((dirent = readdir(dir)))
+		while ((dirent = readdir(dir)))
 			push_front(&(node->content), dirent->d_name, node);
 		closedir(dir);
 		sort_list_by(&(node->content), compare_lexicographic);
@@ -51,12 +51,15 @@ void parse_format_recur(t_dir *head, unsigned short flags)
 	t_dir *curr;
 
 	curr = head;
-	while(curr)
+	while (curr)
 	{
 		if (stat_handler(curr, flags) == SUCCESS)
 			if (S_ISDIR(curr->stat.st_mode)
 				&& is_dummy_dir(curr) == FALSE)
-				dir_handler(curr, flags);
+			{
+				if ((flags & get_flag_code('R')) || !(curr->parent))
+					dir_handler(curr, flags);
+			}
 		curr = curr->next;
 	}
 }
@@ -72,7 +75,7 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 		push_front(&head, ".", NULL);
 	else
 	{
-		while(*argv != NULL)
+		while (*argv != NULL)
 		{
 			push_front(&head, *argv, NULL);
 			argv++;
