@@ -41,6 +41,7 @@ char stat_handler(t_dir *node, unsigned short flags)
 	else
 	{
 		node->status = NO_SUCH_FILE_OR_DIR;
+		error_handler(NO_SUCH_FILE_OR_DIR, node->name);
 		return (FAILURE);
 	}
 }
