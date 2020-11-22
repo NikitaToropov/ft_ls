@@ -2,13 +2,13 @@
 
 t_dir *get_tail(t_dir *node)
 {
-	while(node && node->next)
+	while (node && node->next)
 		node = node->next;
 	return (node);
 }
 
 t_dir *partition(t_dir *head, t_dir *end, t_dir **new_head, t_dir **new_end,
-		char comparator(const t_dir *, const t_dir *))
+				 char comparator(const t_dir *, const t_dir *))
 {
 	t_dir *pivot;
 	t_dir *prev;
@@ -20,7 +20,7 @@ t_dir *partition(t_dir *head, t_dir *end, t_dir **new_head, t_dir **new_end,
 	prev = NULL;
 	cur = head;
 	tail = pivot;
-	while(cur != pivot)
+	while (cur != pivot)
 	{
 		if (comparator(cur, pivot) == LESS)
 		{
@@ -45,7 +45,7 @@ t_dir *partition(t_dir *head, t_dir *end, t_dir **new_head, t_dir **new_end,
 }
 
 t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
-		char comparator(const t_dir *, const t_dir *))
+							   char comparator(const t_dir *, const t_dir *))
 {
 	t_dir *new_head;
 	t_dir *new_end;
@@ -60,7 +60,7 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	if (new_head != pivot)
 	{
 		tmp = new_head;
-		while(tmp->next != pivot)
+		while (tmp->next != pivot)
 			tmp = tmp->next;
 		tmp->next = NULL;
 		new_head = quick_sort_t_dirs_recur(new_head, tmp, comparator);
@@ -71,7 +71,10 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	return (new_head);
 }
 
-void sort_list_by(t_dir **head, char comparator(const t_dir *, const t_dir *))
+void sort_t_dir_list(t_dir **head, unsigned short flags)
 {
-	*head = quick_sort_t_dirs_recur(*head, get_tail(*head), comparator);
+	(void) flags;
+	*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
+									compare_lexicographic);
+//	*head = quick_sort_t_dirs_recur(*head, get_tail(*head), comparator);
 }

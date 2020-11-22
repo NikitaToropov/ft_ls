@@ -3,8 +3,13 @@
 void print_dir_description(t_dir *dir, unsigned short flags)
 {
 	(void) flags;
+	ft_printf("\n%s:\n", dir->path);
+	if (dir->status == PERMISSION_DENIED)
+	{
+		error_handler(PERMISSION_DENIED, dir->name);
+		return;
+	}
 	fill_total(dir);
-	ft_printf("\n%s:\n%lli\n", dir->path, dir->stat.st_blocks);
 	ft_printf("total %lli\n", dir->total_size);
 }
 

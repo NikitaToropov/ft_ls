@@ -23,11 +23,14 @@ void dir_handler(t_dir *node, unsigned short flags)
 		while ((dirent = readdir(dir)))
 			push_front(&(node->content), dirent->d_name, node);
 		closedir(dir);
-		sort_list_by(&(node->content), compare_lexicographic);
+		sort_t_dir_list(&(node->content), flags);
 		parse_format_recur(node->content, flags);
 	}
 	else
+	{
+//		error_handler(PERMISSION_DENIED, node->path); //TODO перенести в печать
 		node->status = PERMISSION_DENIED;
+	}
 }
 
 char stat_handler(t_dir *node, unsigned short flags)
@@ -81,7 +84,7 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 			push_front(&head, *argv, NULL);
 			argv++;
 		}
-		sort_list_by(&head, compare_lexicographic);
+		sort_t_dir_list(&head, flags);
 	}
 	parse_format_recur(head, flags);
 	return (head);
