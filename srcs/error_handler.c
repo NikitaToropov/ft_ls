@@ -2,7 +2,7 @@
 
 void error_handler(char error_code, char *arg)
 {
-	if (error_code == ILLEGAL_OPTON)
+	if (error_code == ILLEGAL_OPTION)
 	{
 		write(STDERR_FILENO, "ls: illegal option -- ", 22);
 		write(STDERR_FILENO, arg, 1);

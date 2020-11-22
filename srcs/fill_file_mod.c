@@ -14,7 +14,10 @@ static char extended_attributes(char *path)
 		acl = NULL;
 	}
 	if (acl)
+	{
+		acl_free(acl);
 		return '+';
+	}
 	return ' ';
 }
 

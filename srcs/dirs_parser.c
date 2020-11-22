@@ -11,7 +11,7 @@ char is_dummy_dir(t_dir *node)
 	return (FALSE);
 }
 
-void dir_handler(t_dir *node, unsigned short flags)
+void parse_dir_contents(t_dir *node, unsigned short flags)
 {
 	DIR *dir;
 	struct dirent *dirent;
@@ -21,16 +21,13 @@ void dir_handler(t_dir *node, unsigned short flags)
 	if ((dir = opendir(node->path)))
 	{
 		while ((dirent = readdir(dir)))
-			push_front(&(node->content), dirent->d_name, node);
+			push_back(&(node->content), dirent->d_name, node);
 		closedir(dir);
-		sort_t_dir_list(&(node->content), flags);
-		parse_format_recur(node->content, flags);
+		t_dirs_sorting_by_flags_facade(&(node->content), flags);
+		parse_subdir_recursively(&(node->content), flags);
 	}
 	else
-	{
-//		error_handler(PERMISSION_DENIED, node->path); //TODO перенести в печать
 		node->status = PERMISSION_DENIED;
-	}
 }
 
 char stat_handler(t_dir *node, unsigned short flags)
@@ -39,6 +36,10 @@ char stat_handler(t_dir *node, unsigned short flags)
 
 	if (lstat(node->path, &(node->stat)) != -1)
 	{
+		fill_date_string(node, flags);
+		fill_group_name(node, flags);
+		fill_sym_link(node, flags);
+		fill_file_mod(node, flags);
 		return (SUCCESS);
 	}
 	else
@@ -50,25 +51,28 @@ char stat_handler(t_dir *node, unsigned short flags)
 }
 
 
-void parse_format_recur(t_dir *head, unsigned short flags)
+void parse_subdir_recursively(t_dir **head, unsigned short flags)
 {
 	t_dir *curr;
 
-	curr = head;
+	curr = *head;
 	while (curr)
 	{
 		if (stat_handler(curr, flags) == SUCCESS)
+		{
 			if (S_ISDIR(curr->stat.st_mode)
 				&& is_dummy_dir(curr) == FALSE)
 			{
 				if ((flags & get_flag_code('R')) || !(curr->parent))
-					dir_handler(curr, flags);
+					parse_dir_contents(curr, flags);
 			}
+		}
 		curr = curr->next;
 	}
+	t_dirs_sorting_by_flags_facade(head, flags);
 }
 
-t_dir *dirs_parser(char **argv, unsigned short flags)
+t_dir *dir_parser_facade(char **argv, unsigned short flags)
 {
 	t_dir *head;
 
@@ -76,16 +80,19 @@ t_dir *dirs_parser(char **argv, unsigned short flags)
 	(void) flags;
 	head = NULL;
 	if (*argv == NULL)
-		push_front(&head, ".", NULL);
+		push_back(&head, ".", NULL);
 	else
 	{
 		while (*argv != NULL)
 		{
-			push_front(&head, *argv, NULL);
+			push_back(&head, *argv, NULL);
 			argv++;
 		}
-		sort_t_dir_list(&head, flags);
+//		if (!(flags & get_flag_code('f')))
+//			head = quick_sort_t_dirs_recur(head, get_tail(head),
+//				compare_lexicographic);
 	}
-	parse_format_recur(head, flags);
+	parse_subdir_recursively(&head, flags);
+	t_dirs_sorting_by_flags_facade(&head, flags);
 	return (head);
 }

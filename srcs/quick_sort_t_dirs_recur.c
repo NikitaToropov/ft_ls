@@ -71,10 +71,29 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	return (new_head);
 }
 
-void sort_t_dir_list(t_dir **head, unsigned short flags)
+void t_dirs_sorting_by_flags_facade(t_dir **head, unsigned short flags)
 {
 	(void) flags;
-	*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
-									compare_lexicographic);
-//	*head = quick_sort_t_dirs_recur(*head, get_tail(*head), comparator);
+	if (flags & get_flag_code('f'))
+		return;
+	else if (flags & get_flag_code('t')
+			 || flags & get_flag_code('u')
+			 || flags & get_flag_code('U'))
+	{
+		if (flags & get_flag_code('r'))
+			*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
+											compare_by_date_reverse);
+		else
+			*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
+											compare_by_date);
+	}
+	else
+	{
+		if (flags & get_flag_code('r'))
+			*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
+											compare_lexicographic_reverse);
+		else
+			*head = quick_sort_t_dirs_recur(*head, get_tail(*head),
+											compare_lexicographic);
+	}
 }

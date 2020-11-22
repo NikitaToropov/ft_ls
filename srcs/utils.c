@@ -7,7 +7,7 @@ char *ft_pathjoin(char *first, char *second)
 
 	if (!first)
 		return (ft_strdup(second));
-	MEMCHECK((new = malloc(ft_strlen(first) + ft_strlen(second) + 2)));
+	MEM_CHECK((new = malloc(ft_strlen(first) + ft_strlen(second) + 2)));
 	i = 0;
 	while(*first)
 	{
