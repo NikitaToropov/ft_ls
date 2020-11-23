@@ -36,7 +36,7 @@ char stat_handler(t_dir *node, unsigned short flags)
 
 	if (lstat(node->path, &(node->stat)) != -1)
 	{
-		fill_date_string(node, flags);
+		fill_time(node, flags);
 		fill_group_name(node, flags);
 		fill_sym_link(node, flags);
 		fill_file_mod(node, flags);
