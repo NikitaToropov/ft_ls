@@ -6,7 +6,7 @@ char compare_by_date(const t_dir *first, const t_dir *second)
 		return (LESS);
 	else if (first->node_sec_time == second->node_sec_time)
 	{
-		if (first->node_nsec_time > second->node_nsec_time)
+		if (first->node_nsec_time >= second->node_nsec_time)
 			return (LESS);
 		else
 			return (MORE);

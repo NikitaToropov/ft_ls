@@ -76,9 +76,7 @@ void t_dirs_sorting_by_flags_facade(t_dir **head, unsigned short flags)
 	(void) flags;
 	if (flags & get_flag_code('f'))
 		return;
-	else if (flags & get_flag_code('t')
-			 || flags & get_flag_code('u')
-			 || flags & get_flag_code('U'))
+	else if (flags & get_flag_code('t'))
 	{
 		if (flags & get_flag_code('r'))
 			*head = quick_sort_t_dirs_recur(*head, get_tail(*head),

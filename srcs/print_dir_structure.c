@@ -20,6 +20,7 @@ void print_content(t_dir *node, unsigned short flags)
 	if (node->status == NO_SUCH_FILE_OR_DIR)
 		return;
 	fill_owner_name(node, flags);
+//	ft_printf("%s %u %s %s %7lli %s %s%s",
 	ft_printf("%s %u %s %s %7lli %s %s%s\n",
 			  node->file_mod,
 			  node->stat.st_nlink,
@@ -29,6 +30,7 @@ void print_content(t_dir *node, unsigned short flags)
 			  node->date,
 			  node->name,
 			  (node->sym_link != NULL) ? node->sym_link : "");
+//	ft_printf("  %li  %li\n", node->node_sec_time, node->node_nsec_time);
 }
 
 void print_dirs_struct_recur(t_dir *head, unsigned short flags)

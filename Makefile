@@ -19,7 +19,7 @@ C_FILES = comparators.c \
 		t_dir_utils.c \
 		utils.c \
 		print_dir_structure.c \
-		fill_date_string.c \
+		fill_time.c \
 		fill_group_name.c \
 		fill_owner_name.c \
 		fill_sym_link.c \

@@ -16,6 +16,14 @@ unsigned short get_flag_code(char flag)
 	return (result);
 }
 
+void flags_handler(char flag, unsigned short *flags)
+{
+	if (flag == 'U')
+		*flags &= ~(get_flag_code('u'));
+	else if (flag == 'u')
+		*flags &= ~(get_flag_code('U'));
+}
+
 unsigned short parse_the_flags_string(char *flags)
 {
 	unsigned short result;
@@ -27,6 +35,7 @@ unsigned short parse_the_flags_string(char *flags)
 		if (!(flag_code = get_flag_code(*flags)))
 			error_handler(ILLEGAL_OPTION, flags);
 		result |= flag_code;
+		flags_handler(*flags, &result);
 		flags++;
 	}
 	return (result);

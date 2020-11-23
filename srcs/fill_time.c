@@ -12,7 +12,12 @@ void fill_time(t_dir *node, unsigned short flags)
 		node->node_sec_time = node->stat.st_birthtimespec.tv_sec;
 		node->node_nsec_time = node->stat.st_birthtimespec.tv_nsec;
 	}
-
+	else if (flags & get_flag_code('u'))
+	{
+		node_time = &(node->stat.st_atime);
+		node->node_sec_time = node->stat.st_atimespec.tv_sec;
+		node->node_nsec_time = node->stat.st_atimespec.tv_nsec;
+	}
 	else
 	{
 		node_time = &(node->stat.st_mtime);
