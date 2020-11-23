@@ -21,7 +21,7 @@ void error_handler(char error_code, char *arg)
 	{
 		write(STDERR_FILENO, "ls: ", 4);
 		write(STDERR_FILENO, arg, ft_strlen(arg));
-		write(STDERR_FILENO, " Permission denied\n", 19);
+		write(STDERR_FILENO, ": Permission denied\n", 20);
 	}
 	else
 		ft_printf("Dude something wrong in your code");
