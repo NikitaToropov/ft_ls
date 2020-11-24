@@ -24,7 +24,7 @@ void parse_dir_contents(t_dir *node, unsigned short flags)
 			push_back(&(node->content), dirent->d_name, node);
 		closedir(dir);
 		t_dirs_sorting_by_flags_facade(&(node->content), flags);
-		parse_subdir_recursively(&(node->content), flags);
+		parse_nodes_recursively(&(node->content), node, flags);
 	}
 	else
 		node->status = PERMISSION_DENIED;
@@ -51,15 +51,19 @@ char stat_handler(t_dir *node, unsigned short flags)
 }
 
 
-void parse_subdir_recursively(t_dir **head, unsigned short flags)
+void parse_nodes_recursively(t_dir **content_head, t_dir *parent,
+							 unsigned short flags)
 {
 	t_dir *curr;
+	long int sum_blocks;
 
-	curr = *head;
+	curr = *content_head;
+	sum_blocks = 0;
 	while (curr)
 	{
 		if (stat_handler(curr, flags) == SUCCESS)
 		{
+			sum_blocks += (long int)curr->stat.st_blocks;
 			if (S_ISDIR(curr->stat.st_mode)
 				&& is_dummy_dir(curr) == FALSE)
 			{
@@ -69,7 +73,8 @@ void parse_subdir_recursively(t_dir **head, unsigned short flags)
 		}
 		curr = curr->next;
 	}
-	t_dirs_sorting_by_flags_facade(head, flags);
+	fill_total(parent, sum_blocks);
+	t_dirs_sorting_by_flags_facade(content_head, flags);
 }
 
 t_dir *dir_parser_facade(char **argv, unsigned short flags)
@@ -88,11 +93,7 @@ t_dir *dir_parser_facade(char **argv, unsigned short flags)
 			push_back(&head, *argv, NULL);
 			argv++;
 		}
-//		if (!(flags & get_flag_code('f')))
-//			head = quick_sort_t_dirs_recur(head, get_tail(head),
-//				compare_lexicographic);
 	}
-	parse_subdir_recursively(&head, flags);
-	t_dirs_sorting_by_flags_facade(&head, flags);
+	parse_nodes_recursively(&head, NULL, flags);
 	return (head);
 }

@@ -83,7 +83,7 @@ void				fill_group_name(t_dir *node, unsigned short flags);
 void				fill_owner_name(t_dir *node, unsigned short flags);
 void				fill_sym_link(t_dir *node, unsigned short flags);
 void				fill_file_mod(t_dir *node, unsigned short flags);
-void 				fill_total(t_dir *node);
+void 				fill_total(t_dir *node, long int total);
 
 /**
  * t_dir comparators.
@@ -101,8 +101,8 @@ char				compare_lexicographic_reverse(const t_dir *first,
  */
 unsigned short		flags_parser_facade(char ***argv);
 t_dir				*dir_parser_facade(char **argv, unsigned short flags);
-void				parse_subdir_recursively(t_dir **head,
-						unsigned short flags);
+void				parse_nodes_recursively(t_dir **content_head,
+											t_dir *parent, unsigned short flags);
 
 /**
  * Sorting.

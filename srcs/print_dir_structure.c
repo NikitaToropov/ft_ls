@@ -9,13 +9,12 @@ void print_dir_description(t_dir *dir, unsigned short flags)
 		error_handler(PERMISSION_DENIED, dir->name);
 		return;
 	}
-	fill_total(dir);
+//	fill_total(dir);
 	ft_printf("total %lli\n", dir->total_size);
 }
 
 void print_content(t_dir *node, unsigned short flags)
 {
-//		write(1, "THATS IT", 8);
 	(void) flags;
 	if (node->status == NO_SUCH_FILE_OR_DIR)
 		return;
