@@ -45,10 +45,26 @@
 # define USER_N_T				"/Users/nikita_toropov"
 # define DEFAULT_BUFF_SIZE		16
 
+
+
+typedef struct		s_dir_container
+{
+	off_t			biggest_file_size;
+	size_t			longest_owner;
+	size_t			longest_group;
+	long int		sum_blocks;
+}					t_dir_container;
+
+typedef struct		s_format
+{
+	size_t			owner_len;
+	size_t			size_len;
+	size_t			group_len;
+}					t_format;
+
 typedef struct		s_dir
 {
 	long int		total_size;
-	long int 		max_size;
 	char			*name;
 	char			*path;
 	char			*sym_link;
@@ -63,6 +79,7 @@ typedef struct		s_dir
 	struct group	*group_info;
 	struct passwd	*passwd;
 	struct stat		stat;
+	struct s_format	format;
 }					t_dir;
 
 /**
@@ -84,6 +101,8 @@ void				fill_owner_name(t_dir *node, unsigned short flags);
 void				fill_sym_link(t_dir *node, unsigned short flags);
 void				fill_file_mod(t_dir *node, unsigned short flags);
 void 				fill_total(t_dir *node, long int total);
+//void				fill_node_format(t_dir *node, unsigned short flags);
+
 
 /**
  * t_dir comparators.

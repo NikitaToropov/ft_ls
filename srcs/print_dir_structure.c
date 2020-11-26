@@ -18,7 +18,7 @@ void print_content(t_dir *node, unsigned short flags)
 	(void) flags;
 	if (node->status == NO_SUCH_FILE_OR_DIR)
 		return;
-	fill_owner_name(node, flags);
+//	fill_owner_name(node, flags);
 //	ft_printf("%s %u %s %s %7lli %s %s%s",
 	ft_printf("%s %u %s %s %7lli %s %s%s\n",
 			  node->file_mod,

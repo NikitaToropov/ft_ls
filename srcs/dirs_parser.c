@@ -11,7 +11,7 @@ char is_dummy_dir(t_dir *node)
 	return (FALSE);
 }
 
-void parse_dir_contents(t_dir *node, unsigned short flags)
+void fill_the_node_content(t_dir *node, unsigned short flags)
 {
 	DIR *dir;
 	struct dirent *dirent;
@@ -40,6 +40,8 @@ char stat_handler(t_dir *node, unsigned short flags)
 		fill_group_name(node, flags);
 		fill_sym_link(node, flags);
 		fill_file_mod(node, flags);
+		fill_owner_name(node, flags);
+//		fill_node_format(node);
 		return (SUCCESS);
 	}
 	else
@@ -68,7 +70,7 @@ void parse_nodes_recursively(t_dir **content_head, t_dir *parent,
 				&& is_dummy_dir(curr) == FALSE)
 			{
 				if ((flags & get_flag_code('R')) || !(curr->parent))
-					parse_dir_contents(curr, flags);
+					fill_the_node_content(curr, flags);
 			}
 		}
 		curr = curr->next;
