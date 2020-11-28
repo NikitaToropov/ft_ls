@@ -16,18 +16,21 @@ void fill_the_node_content(t_dir *node, unsigned short flags)
 	DIR *dir;
 	struct dirent *dirent;
 
-	(void) flags;
-	dirent = NULL;
-	if ((dir = opendir(node->path)))
+	if ((flags & get_flag_code('R')) || !(node->parent))
 	{
-		while ((dirent = readdir(dir)))
-			push_back(&(node->content), dirent->d_name, node);
-		closedir(dir);
-		t_dirs_sorting_by_flags_facade(&(node->content), flags);
-		parse_nodes_recursively(&(node->content), node, flags);
+		dirent = NULL;
+		dir = NULL;
+		if ((dir = opendir(node->path)))
+		{
+			while ((dirent = readdir(dir)))
+				push_back(&(node->content), dirent->d_name, node);
+			closedir(dir);
+			t_dirs_sorting_by_flags_facade(&(node->content), flags);
+			parse_nodes_recursively(&(node->content), node, flags);
+		}
+		else
+			node->status |= PERMISSION_DENIED;
 	}
-	else
-		node->status = PERMISSION_DENIED;
 }
 
 char stat_handler(t_dir *node, unsigned short flags)
@@ -41,7 +44,11 @@ char stat_handler(t_dir *node, unsigned short flags)
 		fill_sym_link(node, flags);
 		fill_file_mod(node, flags);
 		fill_owner_name(node, flags);
-//		fill_node_format(node);
+		node->num_of_links = node->stat.st_nlink;
+		node->size_in_bytes = node->stat.st_size;
+		node->status |= (S_ISDIR(node->stat.st_mode)) ? DIRECTORY : FILE;
+		node->status |= (node->status & DIRECTORY && is_dummy_dir(node))
+						? DUMMY_DIR : 0;
 		return (SUCCESS);
 	}
 	else
@@ -57,25 +64,29 @@ void parse_nodes_recursively(t_dir **content_head, t_dir *parent,
 							 unsigned short flags)
 {
 	t_dir *curr;
-	long int sum_blocks;
+	t_helper helper;
+	size_t tmp_len;
 
 	curr = *content_head;
-	sum_blocks = 0;
+	ft_bzero(&helper, sizeof(helper));
 	while (curr)
 	{
 		if (stat_handler(curr, flags) == SUCCESS)
 		{
-			sum_blocks += (long int)curr->stat.st_blocks;
-			if (S_ISDIR(curr->stat.st_mode)
-				&& is_dummy_dir(curr) == FALSE)
-			{
-				if ((flags & get_flag_code('R')) || !(curr->parent))
-					fill_the_node_content(curr, flags);
-			}
+			helper.sum_blocks += (long int) curr->stat.st_blocks;
+			if (curr->status == DIRECTORY)
+				fill_the_node_content(curr, flags);
+			if (curr->size_in_bytes > helper.biggest_file_size)
+				helper.biggest_file_size = curr->size_in_bytes;
+			if ((tmp_len = ft_strlen(curr->owner_name)) > helper.longest_owner)
+				helper.longest_owner = tmp_len;
+			if ((tmp_len = ft_strlen(curr->group_name)) > helper.longest_group)
+				helper.longest_group = tmp_len;
 		}
 		curr = curr->next;
 	}
-	fill_total(parent, sum_blocks);
+	fill_total(parent, helper.sum_blocks);
+	fill_format(parent, flags, helper);
 	t_dirs_sorting_by_flags_facade(content_head, flags);
 }
 

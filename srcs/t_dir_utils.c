@@ -10,6 +10,10 @@ void del_t_dir(t_dir **node)
 		free((*node)->path);
 	if ((*node)->sym_link)
 		free((*node)->sym_link);
+	if ((*node)->group_name)
+		free((*node)->group_name);
+	if ((*node)->owner_name)
+		free((*node)->owner_name);
 	free(*node);
 	*node = NULL;
 }
