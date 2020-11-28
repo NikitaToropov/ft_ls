@@ -27,9 +27,17 @@
 
 # define MEM_CHECK(x) if (!x) exit(2)
 
+
 # define ILLEGAL_OPTION			1
+
+/**
+ * Nodes statuses.
+ */
 # define NO_SUCH_FILE_OR_DIR	2
-# define PERMISSION_DENIED		3
+# define PERMISSION_DENIED		4
+# define DIRECTORY				8
+# define DUMMY_DIR				16
+# define FILE					32
 
 # define SUCCESS				1
 # define FAILURE				0
@@ -45,15 +53,19 @@
 # define USER_N_T				"/Users/nikita_toropov"
 # define DEFAULT_BUFF_SIZE		16
 
+# define ROOT					"root"
+# define ADMIN					"admin"
 
 
-typedef struct		s_dir_container
+
+typedef struct		s_helper
 {
+	long int 		sum_block;
 	off_t			biggest_file_size;
 	size_t			longest_owner;
 	size_t			longest_group;
 	long int		sum_blocks;
-}					t_dir_container;
+}					t_helper;
 
 typedef struct		s_format
 {
@@ -64,22 +76,32 @@ typedef struct		s_format
 
 typedef struct		s_dir
 {
-	long int		total_size;
+	char			status;
+
 	char			*name;
 	char			*path;
-	char			*sym_link;
+	long int		total_size;
+
 	time_t			node_sec_time;
 	time_t			node_nsec_time;
 	char			date[13];
-	char			status;
+
+	char			*sym_link;
+	nlink_t			num_of_links;
+	off_t			size_in_bytes;
+	char			*owner_name;
+	char			*group_name;
 	char			file_mod[20];
+
+	struct group	*group;
+	struct stat		stat;
+	struct passwd	*passwd;
+
+	struct s_format	format;
+
 	struct s_dir	*content;
 	struct s_dir	*parent;
 	struct s_dir	*next;
-	struct group	*group_info;
-	struct passwd	*passwd;
-	struct stat		stat;
-	struct s_format	format;
 }					t_dir;
 
 /**
@@ -101,7 +123,8 @@ void				fill_owner_name(t_dir *node, unsigned short flags);
 void				fill_sym_link(t_dir *node, unsigned short flags);
 void				fill_file_mod(t_dir *node, unsigned short flags);
 void 				fill_total(t_dir *node, long int total);
-//void				fill_node_format(t_dir *node, unsigned short flags);
+void				fill_format(t_dir *node, unsigned short flags,
+						t_helper helper);
 
 
 /**
