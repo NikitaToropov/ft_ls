@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void fill_time(t_dir *node, unsigned short flags)
+void fill_time(t_node *node, unsigned short flags)
 {
 	char *full_date;
 	time_t current_sec_time;

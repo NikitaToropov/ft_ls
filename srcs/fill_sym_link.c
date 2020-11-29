@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void fill_sym_link(t_dir *node, unsigned short flags)
+void fill_sym_link(t_node *node, unsigned short flags)
 {
 	ssize_t buffsize;
 	ssize_t real_size;
@@ -8,7 +8,8 @@ void fill_sym_link(t_dir *node, unsigned short flags)
 
 	(void) flags;
 	link = NULL;
-	buffsize = DEFAULT_BUFF_SIZE;
+	if ((buffsize = DEFAULT_BUFF_SIZE) < 16)
+		exit(1);
 	if (S_ISLNK(node->stat.st_mode))
 	{
 		MEM_CHECK((link = malloc(buffsize)));

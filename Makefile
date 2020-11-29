@@ -24,7 +24,6 @@ C_FILES = comparators.c \
 		fill_owner_name.c \
 		fill_sym_link.c \
 		fill_file_mod.c \
-		fill_total.c \
 		fill_format.c \
 
 HEADER = $(INCLUDES)/ft_ls.h

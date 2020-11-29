@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void print_dir_description(t_dir *dir, unsigned short flags)
+void print_dir_description(t_node *dir, unsigned short flags)
 {
 	(void) flags;
 	ft_printf("\n%s:\n", dir->path);
@@ -12,26 +12,36 @@ void print_dir_description(t_dir *dir, unsigned short flags)
 	ft_printf("total %lli\n", dir->total_size);
 }
 
-void print_content(t_dir *node, unsigned short flags)
+void print_content(t_node *node, unsigned short flags)
 {
-	(void) flags;
-	if (node->status == NO_SUCH_FILE_OR_DIR)
-		return;
-	ft_printf("%s %u %s %s %7lli %s %s%s\n",
+	t_dir_format format;
+	char *format_string;
+
+	if (node->status == NO_SUCH_FILE_OR_DIR) return;
+	if (node->parent) format = node->parent->format;
+	else ft_bzero(&format, sizeof(format));
+	if (flags & get_flag_code('g')) format_string = G_FORMATTING;
+	else if (flags & get_flag_code('l')) format_string = L_FORMATTING;
+	else format_string = L_FORMATTING;
+	ft_printf(format_string,
 			  node->file_mod,
+			  format.num_of_links_len,
 			  node->num_of_links,
+			  format.owner_len,
 			  node->owner_name,
+			  format.group_len,
 			  node->group_name,
+			  format.size_len,
 			  node->size_in_bytes,
 			  node->date,
 			  node->name,
 			  (node->sym_link != NULL) ? node->sym_link : "");
-
+	if (!node->next)
 }
 
-void print_dirs_struct_recur(t_dir *head, unsigned short flags)
+void print_dirs_struct_recur(t_node *head, unsigned short flags)
 {
-	t_dir *curr;
+	t_node *curr;
 
 	(void) flags;
 	curr = head;
@@ -59,9 +69,9 @@ void print_dirs_struct_recur(t_dir *head, unsigned short flags)
 	}
 }
 
-void print_dirs_struct(t_dir *head, unsigned short flags)
+void print_dirs_struct(t_node *head, unsigned short flags)
 {
-	t_dir *node;
+	t_node *node;
 
 	node = head;
 	while (node)

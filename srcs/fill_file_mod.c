@@ -21,7 +21,7 @@ static char extended_attributes(char *path)
 	return ' ';
 }
 
-void fill_file_mod(t_dir *node, unsigned short flags)
+void fill_file_mod(t_node *node, unsigned short flags)
 {
 	(void) flags;
 	node->file_mod[0] = S_ISDIR(node->stat.st_mode) ? 'd' : '-';

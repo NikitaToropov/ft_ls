@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void del_t_dir(t_dir **node)
+void del_t_dir(t_node **node)
 {
 	if (!*node)
 		return;
@@ -18,11 +18,11 @@ void del_t_dir(t_dir **node)
 	*node = NULL;
 }
 
-t_dir *new_t_dir(char *name, t_dir *parent)
+t_node *new_t_dir(char *name, t_node *parent)
 {
-	t_dir *new;
+	t_node *new;
 
-	MEM_CHECK((new = ft_memalloc(sizeof(t_dir))));
+	MEM_CHECK((new = ft_memalloc(sizeof(t_node))));
 	if (name[0] == '~')
 		new->name = ft_strjoin(USER_N_T, name + 1);
 	else
@@ -34,10 +34,10 @@ t_dir *new_t_dir(char *name, t_dir *parent)
 	return (new);
 }
 
-void push_back(t_dir **head, char *name, t_dir *parent)
+void push_back(t_node **head, char *name, t_node *parent)
 {
-	static t_dir *last_node;
-	t_dir *new_node;
+	static t_node *last_node;
+	t_node *new_node;
 
 	MEM_CHECK((new_node = new_t_dir(name, parent)));
 	if (*head == NULL)
@@ -47,15 +47,15 @@ void push_back(t_dir **head, char *name, t_dir *parent)
 	last_node = new_node;
 }
 
-void del_t_dirs_recur(t_dir *head)
+void del_nodes_recur(t_node *head)
 {
-	t_dir *curr;
-	t_dir *tmp;
+	t_node *curr;
+	t_node *tmp;
 
 	curr = head;
 	while (curr)
 	{
-		del_t_dirs_recur(curr->content);
+		del_nodes_recur(curr->content);
 		tmp = curr;
 		curr = curr->next;
 		del_t_dir(&tmp);

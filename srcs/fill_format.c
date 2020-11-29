@@ -30,12 +30,19 @@ size_t width(int num)
 	}
 }
 
-void fill_format(t_dir *node, unsigned short flags, t_helper helper)
+void fill_format(t_node *parent, unsigned short flags, t_node *curr)
 {
+	size_t len;
+
 	(void) flags;
-	if (!node)
+	if (!parent || !curr)
 		return;
-	node->format.owner_len = helper.longest_owner;
-	node->format.group_len = helper.longest_group;
-	node->format.size_len = width((int)helper.biggest_file_size);
+	if ((len = width(curr->size_in_bytes)) > parent->format.size_len)
+		parent->format.size_len = len;
+	if ((len = width(curr->num_of_links)) > parent->format.num_of_links_len)
+		parent->format.num_of_links_len = len;
+	if ((len = ft_strlen(curr->owner_name)) > parent->format.owner_len)
+		parent->format.owner_len = len;
+	if ((len = ft_strlen(curr->group_name)) > parent->format.group_len)
+		parent->format.group_len = len;
 }

@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-char compare_by_date(const t_dir *first, const t_dir *second)
+char compare_by_date(const t_node *first, const t_node *second)
 {
 	if (first->node_sec_time > second->node_sec_time)
 		return (LESS);
@@ -15,7 +15,7 @@ char compare_by_date(const t_dir *first, const t_dir *second)
 		return (MORE);
 }
 
-char compare_by_date_reverse(const t_dir *first, const t_dir *second)
+char compare_by_date_reverse(const t_node *first, const t_node *second)
 {
 	if (compare_by_date(first, second) == LESS)
 		return (MORE);
@@ -23,7 +23,7 @@ char compare_by_date_reverse(const t_dir *first, const t_dir *second)
 		return (LESS);
 }
 
-char compare_lexicographic(const t_dir *first, const t_dir *second)
+char compare_lexicographic(const t_node *first, const t_node *second)
 {
 	if (ft_strcmp(first->name, second->name) > 0)
 		return (MORE);
@@ -31,7 +31,7 @@ char compare_lexicographic(const t_dir *first, const t_dir *second)
 		return (LESS);
 }
 
-char compare_lexicographic_reverse(const t_dir *first, const t_dir *second)
+char compare_lexicographic_reverse(const t_node *first, const t_node *second)
 {
 	if (ft_strcmp(first->name, second->name) > 0)
 		return (LESS);
