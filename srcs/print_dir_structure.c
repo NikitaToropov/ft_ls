@@ -36,7 +36,6 @@ void print_content(t_node *node, unsigned short flags)
 			  node->date,
 			  node->name,
 			  (node->sym_link != NULL) ? node->sym_link : "");
-	if (!node->next)
 }
 
 void print_dirs_struct_recur(t_node *head, unsigned short flags)

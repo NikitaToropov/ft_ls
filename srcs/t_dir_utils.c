@@ -23,10 +23,7 @@ t_node *new_t_dir(char *name, t_node *parent)
 	t_node *new;
 
 	MEM_CHECK((new = ft_memalloc(sizeof(t_node))));
-	if (name[0] == '~')
-		new->name = ft_strjoin(USER_N_T, name + 1);
-	else
-		new->name = ft_strdup(name);
+	new->name = ft_strdup(name);
 	new->parent = parent;
 	new->path = ft_pathjoin((parent)
 							? parent->path
