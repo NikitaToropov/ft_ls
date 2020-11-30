@@ -36,6 +36,7 @@ void fill_format(t_node *parent, unsigned short flags, t_node *curr)
 	(void) flags;
 	if (!parent || !curr)
 		return;
+	parent->format.num_of_files++;
 	if ((len = width(curr->size_in_bytes)) > parent->format.size_len)
 		parent->format.size_len = len;
 	if ((len = width(curr->num_of_links)) > parent->format.num_of_links_len)

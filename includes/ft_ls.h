@@ -57,8 +57,8 @@
 /**
  * Formatting strings.
  */
-# define L_FORMATTING					"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
-# define G_FORMATTING					"%s %*u %6$-*s  %*lli %s %s%s\n"
+# define L_FORMATTING			"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
+# define G_FORMATTING			"%s %*u %6$-*s  %*lli %s %s%s\n"
 
 /**
  * All flags.
@@ -66,9 +66,9 @@
 # define FLAGS					"lRartuUfg"
 
 
-
 typedef struct		s_dir_format
 {
+	size_t			num_of_files;
 	size_t			name_len;
 	size_t			owner_len;
 	size_t			size_len;
@@ -128,7 +128,6 @@ void				fill_sym_link(t_node *node, unsigned short flags);
 void				fill_file_mod(t_node *node, unsigned short flags);
 void				fill_format(t_node *parent, unsigned short
 						flags, t_node *curr);
-
 
 /**
  * t_node comparators.
