@@ -53,14 +53,12 @@
 # define SIX_MONTHS				15770000
 # define SYM_LINK_ARROW			" -> "
 # define DEFAULT_BUFF_SIZE		16
-# define USER_N_T				"/Users/nikita_toropov"
 
 /**
  * Formatting strings.
  */
 # define L_FORMATTING					"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
 # define G_FORMATTING					"%s %*u %6$-*s  %*lli %s %s%s\n"
-
 
 /**
  * All flags.
@@ -71,6 +69,7 @@
 
 typedef struct		s_dir_format
 {
+	size_t			name_len;
 	size_t			owner_len;
 	size_t			size_len;
 	size_t			group_len;

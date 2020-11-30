@@ -1,7 +1,6 @@
 #include "ft_ls.h"
 
-
-size_t width(int num)
+static size_t width(int num)
 {
 	if (num >= 100000)
 	{
@@ -45,4 +44,6 @@ void fill_format(t_node *parent, unsigned short flags, t_node *curr)
 		parent->format.owner_len = len;
 	if ((len = ft_strlen(curr->group_name)) > parent->format.group_len)
 		parent->format.group_len = len;
+	if ((len = ft_strlen(curr->name)) > parent->format.name_len)
+		parent->format.name_len = len;
 }
