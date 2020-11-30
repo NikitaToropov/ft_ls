@@ -16,7 +16,15 @@ unsigned short get_flag_code(char flag)
 	return (result);
 }
 
-unsigned short parse_block(char *flags)
+void flags_handler(char flag, unsigned short *flags)
+{
+	if (flag == 'U')
+		*flags &= ~(get_flag_code('u'));
+	else if (flag == 'u')
+		*flags &= ~(get_flag_code('U'));
+}
+
+unsigned short parse_the_flags_string(char *flags)
 {
 	unsigned short result;
 	unsigned short flag_code;
@@ -25,22 +33,23 @@ unsigned short parse_block(char *flags)
 	while(*flags)
 	{
 		if (!(flag_code = get_flag_code(*flags)))
-			error_handler(ILLEGAL_OPTON, flags);
+			error_handler(ILLEGAL_OPTION, flags);
 		result |= flag_code;
+		flags_handler(*flags, &result);
 		flags++;
 	}
 	return (result);
 }
 
-unsigned short flags_parser(char ***argv)
+unsigned short flags_parser_facade(char ***argv)
 {
-	unsigned result;
+	unsigned short result;
 
 	result = 0;
 	(*argv)++;
 	while(**argv && **argv[0] && **argv[0] == '-' && **argv[0])
 	{
-		result |= parse_block(**argv + 1);
+		result |= parse_the_flags_string(**argv + 1);
 		(*argv)++;
 	}
 	return (result);

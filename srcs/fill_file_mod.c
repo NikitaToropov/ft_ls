@@ -14,11 +14,14 @@ static char extended_attributes(char *path)
 		acl = NULL;
 	}
 	if (acl)
+	{
+		acl_free(acl);
 		return '+';
+	}
 	return ' ';
 }
 
-void fill_file_mod(t_dir *node, unsigned short flags)
+void fill_file_mod(t_node *node, unsigned short flags)
 {
 	(void) flags;
 	node->file_mod[0] = S_ISDIR(node->stat.st_mode) ? 'd' : '-';
@@ -33,5 +36,8 @@ void fill_file_mod(t_dir *node, unsigned short flags)
 	node->file_mod[7] = (node->stat.st_mode & S_IROTH) ? 'r' : '-';
 	node->file_mod[8] = (node->stat.st_mode & S_IWOTH) ? 'w' : '-';
 	node->file_mod[9] = (node->stat.st_mode & S_IXOTH) ? 'x' : '-';
+	node->file_mod[9] = (node->stat.st_mode & S_ISVTX)
+						? 't'
+						: node->file_mod[9];
 	node->file_mod[10] = extended_attributes(node->path);
 }

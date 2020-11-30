@@ -1,26 +1,26 @@
 #include "ft_ls.h"
 
-t_dir *get_tail(t_dir *node)
+t_node *get_tail(t_node *node)
 {
-	while(node && node->next)
+	while (node && node->next)
 		node = node->next;
 	return (node);
 }
 
-t_dir *partition(t_dir *head, t_dir *end, t_dir **new_head, t_dir **new_end,
-		char comparator(const t_dir *, const t_dir *))
+t_node *partition(t_node *head, t_node *end, t_node **new_head, t_node **new_end,
+				  char comparator(const t_node *, const t_node *))
 {
-	t_dir *pivot;
-	t_dir *prev;
-	t_dir *cur;
-	t_dir *tail;
-	t_dir *tmp;
+	t_node *pivot;
+	t_node *prev;
+	t_node *cur;
+	t_node *tail;
+	t_node *tmp;
 
 	pivot = end;
 	prev = NULL;
 	cur = head;
 	tail = pivot;
-	while(cur != pivot)
+	while (cur != pivot)
 	{
 		if (comparator(cur, pivot) == LESS)
 		{
@@ -44,13 +44,13 @@ t_dir *partition(t_dir *head, t_dir *end, t_dir **new_head, t_dir **new_end,
 	return (pivot);
 }
 
-t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
-		char comparator(const t_dir *, const t_dir *))
+t_node *quick_sort_nodes_recur(t_node *head, t_node *end,
+							   char comparator(const t_node *, const t_node *))
 {
-	t_dir *new_head;
-	t_dir *new_end;
-	t_dir *pivot;
-	t_dir *tmp;
+	t_node *new_head;
+	t_node *new_end;
+	t_node *pivot;
+	t_node *tmp;
 
 	if (!head || head == end || !comparator)
 		return (head);
@@ -60,18 +60,38 @@ t_dir *quick_sort_t_dirs_recur(t_dir *head, t_dir *end,
 	if (new_head != pivot)
 	{
 		tmp = new_head;
-		while(tmp->next != pivot)
+		while (tmp->next != pivot)
 			tmp = tmp->next;
 		tmp->next = NULL;
-		new_head = quick_sort_t_dirs_recur(new_head, tmp, comparator);
+		new_head = quick_sort_nodes_recur(new_head, tmp, comparator);
 		tmp = get_tail(new_head);
 		tmp->next = pivot;
 	}
-	pivot->next = quick_sort_t_dirs_recur(pivot->next, new_end, comparator);
+	pivot->next = quick_sort_nodes_recur(pivot->next, new_end, comparator);
 	return (new_head);
 }
 
-void sort_list_by(t_dir **head, char comparator(const t_dir *, const t_dir *))
+void nodes_sorting_by_flags_facade(t_node **head, unsigned short flags)
 {
-	*head = quick_sort_t_dirs_recur(*head, get_tail(*head), comparator);
+	(void) flags;
+	if (flags & get_flag_code('f'))
+		return;
+	else if (flags & get_flag_code('t'))
+	{
+		if (flags & get_flag_code('r'))
+			*head = quick_sort_nodes_recur(*head, get_tail(*head),
+										   compare_by_date_reverse);
+		else
+			*head = quick_sort_nodes_recur(*head, get_tail(*head),
+										   compare_by_date);
+	}
+	else
+	{
+		if (flags & get_flag_code('r'))
+			*head = quick_sort_nodes_recur(*head, get_tail(*head),
+										   compare_lexicographic_reverse);
+		else
+			*head = quick_sort_nodes_recur(*head, get_tail(*head),
+										   compare_lexicographic);
+	}
 }
