@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <sys/xattr.h>
 # include <sys/acl.h>
+# include <sys/ioctl.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -161,5 +162,7 @@ t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
  * Printing.
  */
 void				print_dirs_struct(t_node *head, unsigned short flags);
+
+void	print_by_column(t_node *parent);
 
 #endif
