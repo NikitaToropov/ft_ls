@@ -7,7 +7,7 @@ unsigned short get_flag_code(char flag)
 
 	result = 0;
 	i = 0;
-	while(FLAGS[i])
+	while (FLAGS[i])
 	{
 		if (flag == FLAGS[i])
 			result |= 1 << i;
@@ -30,7 +30,7 @@ unsigned short parse_the_flags_string(char *flags)
 	unsigned short flag_code;
 
 	result = 0;
-	while(*flags)
+	while (*flags)
 	{
 		if (!(flag_code = get_flag_code(*flags)))
 			error_handler(ILLEGAL_OPTION, flags);
@@ -47,7 +47,7 @@ unsigned short flags_parser_facade(char ***argv)
 
 	result = 0;
 	(*argv)++;
-	while(**argv && **argv[0] && **argv[0] == '-' && **argv[0])
+	while (**argv && **argv[0] && **argv[0] == '-' && **argv[0])
 	{
 		result |= parse_the_flags_string(**argv + 1);
 		(*argv)++;
