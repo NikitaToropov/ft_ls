@@ -108,6 +108,12 @@ typedef struct		s_node
 	struct s_node	*next;
 }					t_node;
 
+typedef struct		s_facade
+{
+	struct s_node	*dirs;
+	struct s_node	files;
+}					t_facade;
+
 /**
  * Utils.
  */
@@ -144,7 +150,7 @@ char				compare_lexicographic_reverse(const t_node *first,
  * Parsers.
  */
 unsigned short		flags_parser_facade(char ***argv);
-t_node				*dir_parser_facade(char **argv, unsigned short flags);
+void				dir_parser_facade(t_facade *facade, char **argv, unsigned short flags);
 void				parse_nodes_recursively(t_node **content_head,
 											t_node *parent, unsigned short flags);
 

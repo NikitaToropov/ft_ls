@@ -85,22 +85,23 @@ void parse_nodes_recursively(t_node **content_head, t_node *parent,
 	nodes_sorting_by_flags_facade(content_head, flags);
 }
 
-t_node *dir_parser_facade(char **argv, unsigned short flags)
+void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
 {
-	t_node *head;
+	struct stat stt;
 	char *default_dir[] = {
 			".",
 			NULL
 	};
 
-	head = NULL;
 	if (*argv == NULL)
 		argv = default_dir;
 	while (*argv != NULL)
 	{
-		push_back(&head, *argv, NULL);
+		if (lstat(*argv, &stt) != -1 && S_ISDIR(stt.st_mode))
+			push_back(&(facade->dirs), *argv, NULL);
+		else
+			push_back(&(facade->files.content), *argv, &(facade->files));
 		argv++;
 	}
-	parse_nodes_recursively(&head, NULL, flags);
-	return (head);
+	parse_nodes_recursively(&(facade->dirs), NULL, flags);
 }
