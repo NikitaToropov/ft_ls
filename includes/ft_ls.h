@@ -140,32 +140,33 @@ void				fill_format(t_node *parent, unsigned short
  */
 char				compare_by_date(const t_node *first, const t_node *second);
 char				compare_by_date_reverse(const t_node *first,
-											const t_node *second);
+						const t_node *second);
 char				compare_lexicographic(const t_node *first,
-										  const t_node *second);
+						const t_node *second);
 char				compare_lexicographic_reverse(const t_node *first,
-												  const t_node *second);
+						const t_node *second);
 
 /**
  * Parsers.
  */
 unsigned short		flags_parser_facade(char ***argv);
-void				dir_parser_facade(t_facade *facade, char **argv, unsigned short flags);
+void				dir_parser_facade(t_facade *facade, char **argv,
+						unsigned short flags);
 void				parse_nodes_recursively(t_node **content_head,
-											t_node *parent, unsigned short flags);
+						t_node *parent, unsigned short flags);
 
 /**
  * Sorting.
  */
 void				nodes_sorting_by_flags_facade(t_node **head,
-												  unsigned short flags);
+						unsigned short flags);
 t_node				*get_tail(t_node *node);
 t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
-											  char comparator(const t_node *, const t_node *));
+						char comparator(const t_node *, const t_node *));
 
 /**
  * Printing.
  */
-void				print_dirs_struct(t_node *head, unsigned short flags);
+void				print_dirs_struct(t_facade facade, unsigned short flags);
 
 #endif

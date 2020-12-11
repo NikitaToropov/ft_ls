@@ -68,22 +68,27 @@ void print_dirs_struct_recur(t_node *head, unsigned short flags)
 	}
 }
 
-void print_dirs_struct(t_node *head, unsigned short flags)
+void print_dirs_struct(t_facade facade, unsigned short flags)
 {
 	t_node *node;
 
-	node = head;
-	while (node)
+	if (facade.files.content)
 	{
-		if (node->status & DIRECTORY)
+		node = facade.files.content;
+		print_dirs_struct_recur(node, flags);
+	}
+	if (facade.dirs && !facade.dirs->next && facade.files.content)
+	{
+		print_dirs_struct_recur(facade.dirs->content, flags);
+	}
+	else
+	{
+		node = facade.dirs;
+		while (node)
 		{
 			print_dir_description(node, flags);
 			print_dirs_struct_recur(node->content, flags);
+			node = node->next;
 		}
-		else if (node->status & FILE)
-		{
-			print_content(node, flags);
-		}
-		node = node->next;
 	}
 }

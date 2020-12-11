@@ -33,15 +33,19 @@ t_node *new_t_dir(char *name, t_node *parent)
 
 void push_back(t_node **head, char *name, t_node *parent)
 {
-	static t_node *last_node;
 	t_node *new_node;
+	t_node *tmp;
 
 	MEM_CHECK((new_node = new_t_dir(name, parent)));
 	if (*head == NULL)
 		*head = new_node;
-	else if (last_node)
-		last_node->next = new_node;
-	last_node = new_node;
+	else
+	{
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_node;
+	}
 }
 
 void del_nodes_recur(t_node *head)

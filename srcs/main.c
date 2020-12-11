@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	ft_bzero(&facade, sizeof(facade));
 	flags = flags_parser_facade(&argv);
 	dir_parser_facade(&facade, argv, flags);
-	print_dirs_struct(facade.dirs, flags);
+	print_dirs_struct(facade, flags);
 	del_nodes_recur(facade.dirs);
 	del_nodes_recur(facade.files.content);
 	return (0);

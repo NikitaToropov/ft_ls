@@ -7,8 +7,8 @@ t_node *get_tail(t_node *node)
 	return (node);
 }
 
-t_node *partition(t_node *head, t_node *end, t_node **new_head, t_node **new_end,
-				  char comparator(const t_node *, const t_node *))
+t_node *partition(t_node *head, t_node *end, t_node **new_head,
+		t_node **new_end, char comparator(const t_node *, const t_node *))
 {
 	t_node *pivot;
 	t_node *prev;
