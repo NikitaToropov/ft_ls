@@ -1,79 +1,52 @@
 #include "ft_ls.h"
 
-void print_dir_description(t_node *dir, unsigned short flags)
+void print_dir(t_node *parent, unsigned short flags, char printing_mod)
 {
-	(void) flags;
-	ft_printf("\n%s:\n", dir->path);
-	if (dir->status & PERMISSION_DENIED)
-	{
-		error_handler(PERMISSION_DENIED, dir->name);
+//	char *format_string;
+
+	if (!parent || parent->status & DUMMY_DIR || parent->status & DUMMY_DIR)
 		return;
-	}
-	ft_printf("total %lli\n", dir->total_size);
-}
-
-void print_long_listing(t_node *node, unsigned short flags)
-{
-	t_dir_format format;
-	char *format_string;
-
-	if (node->status == NO_SUCH_FILE_OR_DIR) return;
-	if (node->parent) format = node->parent->format;
-	else ft_bzero(&format, sizeof(format));
-	if (flags & get_flag_code('g')) format_string = G_FORMATTING;
-	else if (flags & get_flag_code('l')) format_string = L_FORMATTING;
-	else format_string = L_FORMATTING;
-	ft_printf(format_string,
-			  node->file_mod,
-			  format.num_of_links_len,
-			  node->num_of_links,
-			  format.owner_len,
-			  node->owner_name,
-			  format.group_len,
-			  node->group_name,
-			  format.size_len,
-			  node->size_in_bytes,
-			  node->date,
-			  node->name,
-			  (node->sym_link != NULL) ? node->sym_link : "");
-}
-
-void print_one_column(t_node *head, unsigned short flags)
-{
-	t_node *curr;
-
-	curr = head;
-	while (curr)
+	if (parent->path)
 	{
-		print_long_listing(curr, flags);
-		curr = curr->next;
-	}
-}
-
-void print_dirs_struct_recur(t_node *head, unsigned short flags)
-{
-	t_node *curr;
-
-	(void) flags;
-	curr = head;
-
-	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
-		print_one_column(head, flags);
-	else
-		print_by_columns(head->parent);
-	if (!(flags & get_flag_code('R'))
-		&& head
-		&& head->parent
-		&& !head->parent->parent)
-		return;
-	curr = head;
-	while (curr)
-	{
-		if (curr->status & DIRECTORY
-			&& !(curr->status & DUMMY_DIR))
+		if (printing_mod != WO_DIR_DESCRIPTION)
 		{
-			print_dir_description(curr, flags);
-			print_dirs_struct_recur(curr->content, flags);
+			if (printing_mod == W_LINE_BREAK)
+				ft_printf("\n");
+			ft_printf("%s:\n", parent->path);
+			if (parent->status & PERMISSION_DENIED)
+			{
+				error_handler(PERMISSION_DENIED, parent->name);
+				return;
+			}
+		}
+		if (parent->content && (flags & get_flag_code('g') || flags & get_flag_code('l')))
+			ft_printf("total %li\n", parent->total_size);
+	}
+
+}
+
+void
+print_dirs_struct_recur(t_node *parent, unsigned short flags, char printing_mod)
+{
+	t_node *curr;
+
+	if (!parent || (parent->parent && !(flags & get_flag_code('R'))))
+		return;
+	print_dir(parent, flags, printing_mod);
+//	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
+//		print_one_column(parent, flags);
+//	else
+//		print_by_columns(parent->parent);
+//	if (!(flags & get_flag_code('R'))
+//		&& parent->parent
+//		&& !parent->parent->parent)
+//		return;
+	curr = parent->content;
+	while (curr)
+	{
+		if (curr->status & DIRECTORY && !(curr->status & DUMMY_DIR))
+		{
+			print_dirs_struct_recur(curr, flags, W_LINE_BREAK);
 		}
 		curr = curr->next;
 	}
@@ -82,24 +55,22 @@ void print_dirs_struct_recur(t_node *head, unsigned short flags)
 void print_dirs_struct(t_facade facade, unsigned short flags)
 {
 	t_node *node;
+	char dir_printing_mode;
 
-	if (facade.files.content)
-	{
-		node = facade.files.content;
-		print_dirs_struct_recur(node, flags);
-	}
-	if (facade.dirs && !facade.dirs->next && facade.files.content)
-	{
-		print_dirs_struct_recur(facade.dirs->content, flags);
-	}
+	if (facade.files_parent.content)
+		dir_printing_mode = W_LINE_BREAK;
+	else if ((facade.dirs && facade.dirs->next) || facade.invalid_nodes)
+		dir_printing_mode = WO_LINE_BREAK;
 	else
+		dir_printing_mode = WO_DIR_DESCRIPTION;
+	if (facade.files_parent.content)
+		print_dirs_struct_recur(&(facade.files_parent), flags,
+								dir_printing_mode);
+	node = facade.dirs;
+	while (node)
 	{
-		node = facade.dirs;
-		while (node)
-		{
-			print_dir_description(node, flags);
-			print_dirs_struct_recur(node->content, flags);
-			node = node->next;
-		}
+		print_dirs_struct_recur(node, flags, dir_printing_mode);
+		dir_printing_mode = W_LINE_BREAK;
+		node = node->next;
 	}
 }

@@ -11,6 +11,6 @@ int main(int argc, char **argv)
 	dir_parser_facade(&facade, argv, flags);
 	print_dirs_struct(facade, flags);
 	del_nodes_recur(facade.dirs);
-	del_nodes_recur(facade.files.content);
+	del_nodes_recur(facade.files_parent.content);
 	return (0);
 }

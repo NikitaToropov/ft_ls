@@ -29,7 +29,7 @@ void fill_the_node_content(t_node *node, unsigned short flags)
 				push_back(&(node->content), dirent->d_name, node);
 			}
 			closedir(dir);
-			nodes_sorting_by_flags_facade(&(node->content), flags);
+			nodes_sorting_by_flags(&(node->content), flags);
 			parse_nodes_recursively(&(node->content), node, flags);
 		}
 		else
@@ -82,7 +82,7 @@ void parse_nodes_recursively(t_node **content_head, t_node *parent,
 		curr = curr->next;
 	}
 	if (parent) parent->total_size = sum_blocks;
-	nodes_sorting_by_flags_facade(content_head, flags);
+	nodes_sorting_by_flags(content_head, flags);
 }
 
 void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
@@ -93,15 +93,22 @@ void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
 		push_back(&(facade->dirs), ".", NULL);
 	while (*argv != NULL)
 	{
-		if (lstat(*argv, &stt) != -1 && S_ISDIR(stt.st_mode))
-			push_back(&(facade->dirs), *argv, NULL);
+		if (lstat(*argv, &stt) != -1)
+		{
+			if (S_ISDIR(stt.st_mode))
+				push_back(&(facade->dirs), *argv, NULL);
+			else
+				push_back(&(facade->files_parent.content), *argv,
+						  &(facade->files_parent));
+		}
 		else
-			push_back(&(facade->files.content), *argv, &(facade->files));
+			push_back(&(facade->invalid_nodes), *argv, NULL);
 		argv++;
 	}
 	if (facade->dirs)
 		parse_nodes_recursively(&(facade->dirs), NULL, flags);
-	if (facade->files.content)
-		parse_nodes_recursively(&(facade->files.content), &(facade->files),
+	if (facade->files_parent.content)
+		parse_nodes_recursively(&(facade->files_parent.content),
+								&(facade->files_parent),
 								flags);
 }

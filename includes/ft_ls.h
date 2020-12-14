@@ -56,7 +56,23 @@
 # define DEFAULT_BUFF_SIZE		16
 
 /**
- * Formatting strings.
+ * Printing mods.
+ */
+# define WO_DIR_DESCRIPTION		0
+# define WO_LINE_BREAK			1
+# define W_LINE_BREAK			2
+
+/**
+ * Formatting strings for dirs.
+ */
+# define LB_NAME_LB_TOTAL_LB	"\n%s:\ntotal %li\n"
+# define NAME_LB_TOTAL_LB		"%s:\ntotal %li\n"
+# define LB_NAME_LB				"\n%s:\n"
+# define NAME_LB				"%s:\n"
+# define TOTAL_LB				"total %li\n"
+
+/**
+ * Formatting strings for content.
  */
 # define L_FORMATTING			"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
 # define G_FORMATTING			"%s %*u %6$-*s  %*lli %s %s%s\n"
@@ -112,7 +128,8 @@ typedef struct		s_node
 typedef struct		s_facade
 {
 	struct s_node	*dirs;
-	struct s_node	files;
+	struct s_node	files_parent;
+	struct s_node	*invalid_nodes;
 }					t_facade;
 
 /**
@@ -159,8 +176,8 @@ void				parse_nodes_recursively(t_node **content_head,
 /**
  * Sorting.
  */
-void				nodes_sorting_by_flags_facade(t_node **head,
-						unsigned short flags);
+void				nodes_sorting_by_flags(t_node **head,
+										   unsigned short flags);
 t_node				*get_tail(t_node *node);
 t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
 						char comparator(const t_node *, const t_node *));
@@ -169,7 +186,7 @@ t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
  * Printing.
  */
 void				print_dirs_struct(t_facade facade, unsigned short flags);
-
+void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 
 #endif

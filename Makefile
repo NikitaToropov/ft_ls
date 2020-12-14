@@ -26,6 +26,7 @@ C_FILES = comparators.c \
 		fill_file_mod.c \
 		fill_format.c \
 		print_by_column.c \
+		print_long_listing.c \
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))
