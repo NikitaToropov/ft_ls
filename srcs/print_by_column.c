@@ -23,6 +23,9 @@ void				print_columns(t_node ***columns, size_t width)
 	}
 }
 
+/**
+ * TODO need to optimize (general flow for allocation and filling)
+ */
 void 				fill_columns(t_node ***columns, t_node *curr,
 					  unsigned short cols, unsigned rows)
 {
@@ -57,7 +60,19 @@ t_node				***create_columns(unsigned short num_of_columns,
 	return (columns);
 }
 
-void				print_by_column(t_node *parent)
+void destruct_columns(t_node ***columns)
+{
+	unsigned short	i;
+
+	if (!columns)
+		return;
+	i = 0;
+	while (columns[i])
+		free(columns[i++]);
+	free(columns);
+}
+
+void				print_by_columns(t_node *parent)
 {
 	t_node			***columns;
 	struct winsize	w;
@@ -65,6 +80,7 @@ void				print_by_column(t_node *parent)
 	unsigned short	num_of_rows;
 
 	(void) parent;
+	columns = NULL;
 	ioctl(0, TIOCGWINSZ, &w);
 	num_of_columns = w.ws_col / (parent->format.name_len + 1);
 	num_of_rows = parent->format.num_of_files / num_of_columns +
@@ -72,5 +88,6 @@ void				print_by_column(t_node *parent)
 	columns = create_columns(num_of_columns, num_of_rows);
 	fill_columns(columns, parent->content, num_of_columns, num_of_rows);
 	print_columns(columns, parent->format.name_len);
+	destruct_columns(columns);
 }
 

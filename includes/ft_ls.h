@@ -170,6 +170,6 @@ t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
  */
 void				print_dirs_struct(t_facade facade, unsigned short flags);
 
-void	print_by_column(t_node *parent);
+void	print_by_columns(t_node *parent);
 
 #endif

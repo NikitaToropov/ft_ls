@@ -12,7 +12,7 @@ void print_dir_description(t_node *dir, unsigned short flags)
 	ft_printf("total %lli\n", dir->total_size);
 }
 
-void print_content(t_node *node, unsigned short flags)
+void print_long_listing(t_node *node, unsigned short flags)
 {
 	t_dir_format format;
 	char *format_string;
@@ -38,6 +38,18 @@ void print_content(t_node *node, unsigned short flags)
 			  (node->sym_link != NULL) ? node->sym_link : "");
 }
 
+void print_one_column(t_node *head, unsigned short flags)
+{
+	t_node *curr;
+
+	curr = head;
+	while (curr)
+	{
+		print_long_listing(curr, flags);
+		curr = curr->next;
+	}
+}
+
 void print_dirs_struct_recur(t_node *head, unsigned short flags)
 {
 	t_node *curr;
@@ -45,11 +57,10 @@ void print_dirs_struct_recur(t_node *head, unsigned short flags)
 	(void) flags;
 	curr = head;
 
-	while (curr)
-	{
-		print_content(curr, flags);
-		curr = curr->next;
-	}
+	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
+		print_one_column(head, flags);
+	else
+		print_by_columns(head->parent);
 	if (!(flags & get_flag_code('R'))
 		&& head
 		&& head->parent
