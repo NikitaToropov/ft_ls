@@ -105,6 +105,8 @@ void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
 			push_back(&(facade->invalid_nodes), *argv, NULL);
 		argv++;
 	}
+	if (facade->invalid_nodes)
+		nodes_sorting_by_flags(&(facade->invalid_nodes), 0);
 	if (facade->dirs)
 		parse_nodes_recursively(&(facade->dirs), NULL, flags);
 	if (facade->files_parent.content)

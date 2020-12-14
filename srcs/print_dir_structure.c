@@ -52,6 +52,18 @@ print_dirs_struct_recur(t_node *parent, unsigned short flags, char printing_mod)
 	}
 }
 
+void print_invalids(t_node *head)
+{
+	t_node *curr;
+
+	curr = head;
+	while (curr)
+	{
+		error_handler(NO_SUCH_FILE_OR_DIR, curr->name);
+		curr = curr->next;
+	}
+}
+
 void print_dirs_struct(t_facade facade, unsigned short flags)
 {
 	t_node *node;
@@ -66,6 +78,8 @@ void print_dirs_struct(t_facade facade, unsigned short flags)
 	if (facade.files_parent.content)
 		print_dirs_struct_recur(&(facade.files_parent), flags,
 								dir_printing_mode);
+	if (facade.invalid_nodes)
+		print_invalids(facade.invalid_nodes);
 	node = facade.dirs;
 	while (node)
 	{
