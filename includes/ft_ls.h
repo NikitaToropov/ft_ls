@@ -171,7 +171,7 @@ unsigned short		flags_parser_facade(char ***argv);
 void				dir_parser_facade(t_facade *facade, char **argv,
 						unsigned short flags);
 void				parse_nodes_recursively(t_node **content_head,
-						t_node *parent, unsigned short flags);
+						unsigned short flags);
 
 /**
  * Sorting.

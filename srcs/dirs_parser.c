@@ -30,7 +30,7 @@ void fill_the_node_content(t_node *node, unsigned short flags)
 			}
 			closedir(dir);
 			nodes_sorting_by_flags(&(node->content), flags);
-			parse_nodes_recursively(&(node->content), node, flags);
+			parse_nodes_recursively(&(node->content), flags);
 		}
 		else
 			node->status |= PERMISSION_DENIED;
@@ -63,13 +63,15 @@ char stat_handler(t_node *node, unsigned short flags)
 }
 
 
-void parse_nodes_recursively(t_node **content_head, t_node *parent,
-							 unsigned short flags)
+void parse_nodes_recursively(t_node **content_head, unsigned short flags)
 {
 	t_node *curr;
+	t_node *parent;
 	long int sum_blocks;
 
 	curr = *content_head;
+	if (*content_head)
+		parent = (*content_head)->parent;
 	sum_blocks = 0;
 	while (curr)
 	{
@@ -108,9 +110,7 @@ void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
 	if (facade->invalid_nodes)
 		nodes_sorting_by_flags(&(facade->invalid_nodes), 0);
 	if (facade->dirs)
-		parse_nodes_recursively(&(facade->dirs), NULL, flags);
+		parse_nodes_recursively(&(facade->dirs), flags);
 	if (facade->files_parent.content)
-		parse_nodes_recursively(&(facade->files_parent.content),
-								&(facade->files_parent),
-								flags);
+		parse_nodes_recursively(&(facade->files_parent.content), flags);
 }
