@@ -19,10 +19,15 @@ void print_dir(t_node *parent, unsigned short flags, char printing_mod)
 				return;
 			}
 		}
-		if (parent->content && (flags & get_flag_code('g') || flags & get_flag_code('l')))
+		if (parent->content &&
+			(flags & get_flag_code('g') || flags & get_flag_code('l')))
 			ft_printf("total %li\n", parent->total_size);
 	}
 
+	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
+		print_one_column(parent->content, flags);
+	else
+		print_by_columns(parent);
 }
 
 void
@@ -33,14 +38,6 @@ print_dirs_struct_recur(t_node *parent, unsigned short flags, char printing_mod)
 	if (!parent || (parent->parent && !(flags & get_flag_code('R'))))
 		return;
 	print_dir(parent, flags, printing_mod);
-//	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
-//		print_one_column(parent, flags);
-//	else
-//		print_by_columns(parent->parent);
-//	if (!(flags & get_flag_code('R'))
-//		&& parent->parent
-//		&& !parent->parent->parent)
-//		return;
 	curr = parent->content;
 	while (curr)
 	{
