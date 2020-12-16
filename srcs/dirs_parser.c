@@ -70,8 +70,9 @@ void parse_nodes_recursively(t_node **content_head, unsigned short flags)
 	long int sum_blocks;
 
 	curr = *content_head;
-	if (*content_head)
-		parent = (*content_head)->parent;
+	if (!curr)
+		return;
+	parent = (*content_head)->parent;
 	sum_blocks = 0;
 	while (curr)
 	{
