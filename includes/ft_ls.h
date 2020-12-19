@@ -45,8 +45,6 @@
 /**
  * Utility definitions.
  */
-# define SUCCESS				1
-# define FAILURE				0
 # define TRUE					1
 # define FALSE					0
 # define MORE					1
@@ -138,7 +136,6 @@ typedef struct		s_facade
 unsigned short		get_flag_code(char flag);
 void				error_handler(char error_code, char *arg);
 char				*ft_pathjoin(char *first, char *second);
-char				is_dummy_dir(t_node *node);
 
 /**
  * "t_nodes" utils.
