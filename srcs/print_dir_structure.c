@@ -24,10 +24,10 @@ void print_dir(t_node *parent, unsigned short flags, char printing_mod)
 			ft_printf("total %li\n", parent->total_size);
 	}
 
-	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
+//	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
 		print_one_column(parent->content, flags);
-	else
-		print_by_columns(parent);
+//	else
+//		print_by_columns(parent);
 }
 
 void

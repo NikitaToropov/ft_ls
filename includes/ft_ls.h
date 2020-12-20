@@ -74,6 +74,7 @@
  */
 # define L_FORMATTING			"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
 # define G_FORMATTING			"%s %*u %6$-*s  %*lli %s %s%s\n"
+# define DEFAULT_FORMATTING		"%11$s\n"
 
 /**
  * All flags.
