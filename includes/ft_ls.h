@@ -45,8 +45,6 @@
 /**
  * Utility definitions.
  */
-# define SUCCESS				1
-# define FAILURE				0
 # define TRUE					1
 # define FALSE					0
 # define MORE					1
@@ -56,10 +54,27 @@
 # define DEFAULT_BUFF_SIZE		16
 
 /**
- * Formatting strings.
+ * Printing mods.
+ */
+# define WO_DIR_DESCRIPTION		0
+# define WO_LINE_BREAK			1
+# define W_LINE_BREAK			2
+
+/**
+ * Formatting strings for dirs.
+ */
+# define LB_NAME_LB_TOTAL_LB	"\n%s:\ntotal %li\n"
+# define NAME_LB_TOTAL_LB		"%s:\ntotal %li\n"
+# define LB_NAME_LB				"\n%s:\n"
+# define NAME_LB				"%s:\n"
+# define TOTAL_LB				"total %li\n"
+
+/**
+ * Formatting strings for content.
  */
 # define L_FORMATTING			"%s %*u %-*s  %-*s  %*lli %s %s%s\n"
 # define G_FORMATTING			"%s %*u %6$-*s  %*lli %s %s%s\n"
+# define DEFAULT_FORMATTING		"%11$s\n"
 
 /**
  * All flags.
@@ -109,13 +124,19 @@ typedef struct		s_node
 	struct s_node	*next;
 }					t_node;
 
+typedef struct		s_facade
+{
+	struct s_node	*dirs;
+	struct s_node	files_parent;
+	struct s_node	*invalid_nodes;
+}					t_facade;
+
 /**
  * Utils.
  */
 unsigned short		get_flag_code(char flag);
 void				error_handler(char error_code, char *arg);
 char				*ft_pathjoin(char *first, char *second);
-char				is_dummy_dir(t_node *node);
 
 /**
  * "t_nodes" utils.
@@ -135,34 +156,35 @@ void				fill_format(t_node *parent, unsigned short
  */
 char				compare_by_date(const t_node *first, const t_node *second);
 char				compare_by_date_reverse(const t_node *first,
-											const t_node *second);
+						const t_node *second);
 char				compare_lexicographic(const t_node *first,
-										  const t_node *second);
+						const t_node *second);
 char				compare_lexicographic_reverse(const t_node *first,
-												  const t_node *second);
+						const t_node *second);
 
 /**
  * Parsers.
  */
 unsigned short		flags_parser_facade(char ***argv);
-t_node				*dir_parser_facade(char **argv, unsigned short flags);
+void				dir_parser_facade(t_facade *facade, char **argv,
+						unsigned short flags);
 void				parse_nodes_recursively(t_node **content_head,
-											t_node *parent, unsigned short flags);
+						unsigned short flags);
 
 /**
  * Sorting.
  */
-void				nodes_sorting_by_flags_facade(t_node **head,
-												  unsigned short flags);
+void				nodes_sorting_by_flags(t_node **head,
+										   unsigned short flags);
 t_node				*get_tail(t_node *node);
 t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
-											  char comparator(const t_node *, const t_node *));
+						char comparator(const t_node *, const t_node *));
 
 /**
  * Printing.
  */
-void				print_dirs_struct(t_node *head, unsigned short flags);
-
-void	print_by_column(t_node *parent);
+void				print_dirs_struct(t_facade facade, unsigned short flags);
+void	print_one_column(t_node *head, unsigned short flags);
+void	print_by_columns(t_node *parent);
 
 #endif

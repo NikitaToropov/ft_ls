@@ -7,8 +7,8 @@ t_node *get_tail(t_node *node)
 	return (node);
 }
 
-t_node *partition(t_node *head, t_node *end, t_node **new_head, t_node **new_end,
-				  char comparator(const t_node *, const t_node *))
+t_node *partition(t_node *head, t_node *end, t_node **new_head,
+		t_node **new_end, char comparator(const t_node *, const t_node *))
 {
 	t_node *pivot;
 	t_node *prev;
@@ -71,7 +71,7 @@ t_node *quick_sort_nodes_recur(t_node *head, t_node *end,
 	return (new_head);
 }
 
-void nodes_sorting_by_flags_facade(t_node **head, unsigned short flags)
+void nodes_sorting_by_flags(t_node **head, unsigned short flags)
 {
 	(void) flags;
 	if (flags & get_flag_code('f'))
