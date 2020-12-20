@@ -38,3 +38,10 @@ char compare_lexicographic_reverse(const t_node *first, const t_node *second)
 	else
 		return (MORE);
 }
+
+char default_for_pushing_back(const t_node *first, const t_node *second)
+{
+	(void)first;
+	(void)second;
+	return (LESS);
+}

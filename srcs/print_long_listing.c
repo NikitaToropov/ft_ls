@@ -10,7 +10,8 @@ void print_long_listing(t_node *node, unsigned short flags)
 	else ft_bzero(&format, sizeof(format));
 	if (flags & get_flag_code('g')) format_string = G_FORMATTING;
 	else if (flags & get_flag_code('l')) format_string = L_FORMATTING;
-	else format_string = DEFAULT_FORMATTING;
+	else format_string = L_FORMATTING;
+//	else format_string = DEFAULT_FORMATTING;
 	ft_printf(format_string,
 			  node->file_mod,
 			  format.num_of_links_len,

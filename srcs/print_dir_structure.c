@@ -1,9 +1,7 @@
 #include "ft_ls.h"
 
-void print_dir(t_node *parent, unsigned short flags, char printing_mod)
+void print_dir_info(t_node *parent, unsigned short flags, char printing_mod)
 {
-//	char *format_string;
-
 	if (!parent || parent->status & DUMMY_DIR || parent->status & DUMMY_DIR)
 		return;
 	if (parent->path)
@@ -37,7 +35,7 @@ print_dirs_struct_recur(t_node *parent, unsigned short flags, char printing_mod)
 
 	if (!parent || (parent->parent && !(flags & get_flag_code('R'))))
 		return;
-	print_dir(parent, flags, printing_mod);
+	print_dir_info(parent, flags, printing_mod);
 	curr = parent->content;
 	while (curr)
 	{

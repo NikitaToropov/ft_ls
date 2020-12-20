@@ -16,7 +16,7 @@ C_FILES = comparators.c \
 		flags_parser.c \
 		main.c \
 		quick_sort_t_dirs_recur.c \
-		t_dir_utils.c \
+		t_node_utils.c \
 		utils.c \
 		print_dir_structure.c \
 		fill_time.c \
