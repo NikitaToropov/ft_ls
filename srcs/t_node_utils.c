@@ -10,8 +10,8 @@ void del_t_node(t_node **node)
 		free((*node)->path);
 	if ((*node)->sym_link)
 		free((*node)->sym_link);
-	if ((*node)->group_name)
-		free((*node)->group_name);
+//	if ((*node)->group_name)
+//		free((*node)->group_name);
 	if ((*node)->owner_name)
 		free((*node)->owner_name);
 	free(*node);
@@ -49,16 +49,21 @@ t_node *push_back(t_node **head, char *name, t_node *parent)
 	return new_node;
 }
 
-void del_line_of_nodes(t_node *head)
+void del_line_of_nodes(t_node **head)
 {
 	t_node *next;
+	t_node *curr;
 
-	while (head)
+	if (!head || !*head)
+		return;
+	curr = *head;
+	while (curr)
 	{
-		next = head->next;
-		del_t_node(&head);
-		head = next;
+		next = curr->next;
+		del_t_node(&curr);
+		curr = next;
 	}
+	*head = NULL;
 }
 
 //void del_nodes_recur(t_node *head)
@@ -83,8 +88,6 @@ void insert(t_node **head, t_node *new,
 	t_node *prev;
 	t_node *next;
 
-	if (!head || !new)
-		return;
 	if (!*head)
 		*head = new;
 	else

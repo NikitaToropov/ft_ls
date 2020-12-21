@@ -15,18 +15,18 @@ C_FILES = comparators.c \
 		error_handler.c \
 		flags_parser.c \
 		main.c \
-		quick_sort_t_dirs_recur.c \
 		t_node_utils.c \
 		utils.c \
 		print_dir_structure.c \
 		fill_time.c \
-		fill_group_name.c \
-		fill_owner_name.c \
 		fill_sym_link.c \
 		fill_file_mod.c \
 		fill_format.c \
 		print_by_column.c \
 		print_long_listing.c \
+#		quick_sort_t_dirs_recur.c \
+#		fill_group_name.c \
+#		fill_owner_name.c \
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))

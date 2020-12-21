@@ -22,6 +22,9 @@ void print_dir_info(t_node *parent, unsigned short flags, char printing_mod)
 			ft_printf("total %li\n", parent->total_size);
 	}
 
+	/**
+	 * TODO add printing_by_columns
+	 */
 //	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
 		print_one_column(parent->content, flags);
 //	else
@@ -51,35 +54,39 @@ void print_invalids(t_node *head)
 {
 	t_node *curr;
 
-	curr = head;
-	while (curr)
+	if (head)
 	{
-		error_handler(NO_SUCH_FILE_OR_DIR, curr->name);
-		curr = curr->next;
+		curr = head;
+		while (curr)
+		{
+			error_handler(NO_SUCH_FILE_OR_DIR, curr->name);
+			curr = curr->next;
+		}
+		del_line_of_nodes(&head);
 	}
 }
 
-void print_dirs_struct(t_facade facade, unsigned short flags)
-{
-	t_node *node;
-	char dir_printing_mode;
-
-	if (facade.files_parent.content)
-		dir_printing_mode = W_LINE_BREAK;
-	else if ((facade.dirs && facade.dirs->next) || facade.invalid_nodes)
-		dir_printing_mode = WO_LINE_BREAK;
-	else
-		dir_printing_mode = WO_DIR_DESCRIPTION;
-	if (facade.files_parent.content)
-		print_dirs_struct_recur(&(facade.files_parent), flags,
-								dir_printing_mode);
-	if (facade.invalid_nodes)
-		print_invalids(facade.invalid_nodes);
-	node = facade.dirs;
-	while (node)
-	{
-		print_dirs_struct_recur(node, flags, dir_printing_mode);
-		dir_printing_mode = W_LINE_BREAK;
-		node = node->next;
-	}
-}
+//void print_dirs_struct(t_facade facade, unsigned short flags)
+//{
+//	t_node *node;
+//	char dir_printing_mode;
+//
+//	if (facade.files_parent.content)
+//		dir_printing_mode = W_LINE_BREAK;
+//	else if ((facade.dirs && facade.dirs->next) || facade.invalid_nodes)
+//		dir_printing_mode = WO_LINE_BREAK;
+//	else
+//		dir_printing_mode = WO_DIR_DESCRIPTION;
+//	if (facade.files_parent.content)
+//		print_dirs_struct_recur(&(facade.files_parent), flags,
+//								dir_printing_mode);
+//	if (facade.invalid_nodes)
+//		print_invalids(facade.invalid_nodes);
+//	node = facade.dirs;
+//	while (node)
+//	{
+//		print_dirs_struct_recur(node, flags, dir_printing_mode);
+//		dir_printing_mode = W_LINE_BREAK;
+//		node = node->next;
+//	}
+//}

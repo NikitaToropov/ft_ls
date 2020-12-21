@@ -97,7 +97,6 @@ typedef struct		s_node
 	char			status;
 
 	char			*name;
-	unsigned short	name_len;
 	char			*path;
 	long int		total_size;
 
@@ -114,10 +113,6 @@ typedef struct		s_node
 
 	blkcnt_t		blocks;
 
-	struct group	*group;
-	struct stat		stat;
-	struct passwd	*passwd;
-
 	struct s_dir_format	format;
 
 	struct s_node	*content;
@@ -125,12 +120,12 @@ typedef struct		s_node
 	struct s_node	*next;
 }					t_node;
 
-typedef struct		s_facade
-{
-	struct s_node	*dirs;
-	struct s_node	files_parent;
-	struct s_node	*invalid_nodes;
-}					t_facade;
+//typedef struct		s_facade
+//{
+//	struct s_node	*dirs;
+//	struct s_node	files_parent;
+//	struct s_node	*invalid_nodes;
+//}					t_facade;
 
 /**
  * Utils.
@@ -145,16 +140,12 @@ char				*ft_pathjoin(char *first, char *second);
 t_node				*new_t_dir(char *name, t_node *parent);
 void				insert_order_by(t_node **head, t_node *new,
 						unsigned short flags);
-//t_node				*push_back(t_node **head, char *name, t_node *parent);
-//void				del_nodes_recur(t_node *head);
-void				del_line_of_nodes(t_node *head);
-void				fill_time(t_node *node, unsigned short flags);
-void				fill_group_name(t_node *node, unsigned short flags);
-void				fill_owner_name(t_node *node, unsigned short flags);
-void				fill_sym_link(t_node *node, unsigned short flags);
-void				fill_file_mod(t_node *node, unsigned short flags);
-void				fill_format(t_node *parent, unsigned short
-						flags, t_node *curr);
+void				del_line_of_nodes(t_node **head);
+void				fill_time(t_node *node, unsigned short flags,
+						struct stat stt);
+void				fill_sym_link(t_node *node, unsigned short flags, struct stat stt);
+void				fill_file_mod(t_node *node, unsigned short flags, struct stat stt);
+void				fill_format(t_node *parent, unsigned short flags, t_node *curr);
 
 /**
  * t_node comparators.
@@ -174,22 +165,22 @@ char				default_for_pushing_back(const t_node *first,
  */
 unsigned short		flags_parser_facade(char ***argv);
 void				dir_parser_facade(char **argv, unsigned short flags);
-void				parse_nodes_recursively(t_node **content_head,
-						unsigned short flags);
+//void				parse_nodes_recursively(t_node **content_head,
+//						unsigned short flags);
 
 /**
  * Sorting.
  */
-void				nodes_sorting_by_flags(t_node **head,
-										   unsigned short flags);
-t_node				*get_tail(t_node *node);
-t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
-						char comparator(const t_node *, const t_node *));
+//void				nodes_sorting_by_flags(t_node **head,
+//										   unsigned short flags);
+//t_node				*get_tail(t_node *node);
+//t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
+//						char comparator(const t_node *, const t_node *));
 
 /**
  * Printing.
  */
-void				print_dirs_struct(t_facade facade, unsigned short flags);
+//void				print_dirs_struct(t_facade facade, unsigned short flags);
 void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 void	print_invalids(t_node *head);
