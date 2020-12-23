@@ -175,11 +175,11 @@ void				dir_parser_facade(char **argv, unsigned short flags);
 /**
  * Sorting.
  */
-//void				nodes_sorting_by_flags(t_node **head,
-//										   unsigned short flags);
-//t_node				*get_tail(t_node *node);
-//t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
-//						char comparator(const t_node *, const t_node *));
+void				nodes_sorting_by_flags(t_node **head,
+										   unsigned short flags);
+t_node				*get_tail(t_node *node);
+t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
+						char comparator(const t_node *, const t_node *));
 
 /**
  * Printing.

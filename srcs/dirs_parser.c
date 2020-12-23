@@ -61,9 +61,12 @@ void parse_the_dir(t_node *parent, unsigned short flags)
 				!(flags & get_flag_code('a') || flags & get_flag_code('f')))
 				continue;
 			curr = stat_handler(new_t_dir(dirent->d_name, parent), flags);
-			insert_order_by(&(parent->content), curr, flags);
+			curr->next = parent->content;
+			parent->content = curr;
+//			insert_order_by(&(parent->content), curr, flags);
 		}
 		closedir(dir);
+		nodes_sorting_by_flags(&(parent->content), flags);
 		print_dir(parent, flags, W_LINE_BREAK);
 	}
 	else
