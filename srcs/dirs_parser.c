@@ -64,7 +64,7 @@ void parse_the_dir(t_node *parent, unsigned short flags)
 			insert_order_by(&(parent->content), curr, flags);
 		}
 		closedir(dir);
-		print_dir_info(parent, flags, W_LINE_BREAK);
+		print_dir(parent, flags, W_LINE_BREAK);
 	}
 	else
 		error_handler(PERMISSION_DENIED, parent->name);
@@ -111,26 +111,35 @@ void dir_parser_facade(char **argv, unsigned short flags)
 	/**
 	 * TODO need add print_by_columns
 	 */
-//	nodes_sorting_by_flags(&invalid_nodes, 0);
 	print_invalids(invalid_nodes);
+
 	print_one_column(files_parent.content, flags);
 
-	parse_the_dir(dirs_head, flags);
+	tmp = dirs_head;
+	while (tmp)
+	{
+		if (tmp->status == DIRECTORY)
+		{
+			parse_the_dir(tmp, flags);
+			if (tmp->content)
+			{
+				tmp = tmp->content;
+				continue;
+			}
+		}
+		while (!tmp->next)
+		{
+			if (!(tmp = tmp->parent))
+				break;
+			del_line_of_nodes(&(tmp->content));
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+
 	del_line_of_nodes(&(dirs_head->content));
 
 
-//	nodes_sorting_by_flags(&dirs_head, flags);
-
 	del_line_of_nodes(&(dirs_head));
 	del_line_of_nodes(&(files_parent.content));
-//	del_line_of_nodes(&(invalid_nodes));
-
-
-
-//	if (facade->invalid_nodes)
-//		nodes_sorting_by_flags(&(facade->invalid_nodes), 0);
-//	if (facade->dirs_head)
-//		parse_nodes_recursively(&(facade->dirs_head), flags);
-//	if (facade->files_parent.content)
-//		parse_nodes_recursively(&(facade->files_parent.content), flags);
 }

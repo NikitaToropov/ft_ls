@@ -141,6 +141,10 @@ t_node				*new_t_dir(char *name, t_node *parent);
 void				insert_order_by(t_node **head, t_node *new,
 						unsigned short flags);
 void				del_line_of_nodes(t_node **head);
+
+/**
+ * Stat handling functions.
+ */
 void				fill_time(t_node *node, unsigned short flags,
 						struct stat stt);
 void				fill_sym_link(t_node *node, unsigned short flags, struct stat stt);
@@ -184,7 +188,7 @@ void				dir_parser_facade(char **argv, unsigned short flags);
 void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 void	print_invalids(t_node *head);
-void	print_dir_info(t_node *parent, unsigned short flags, char printing_mod);
+void	print_dir(t_node *parent, unsigned short flags, char printing_mod);
 
 
 #endif
