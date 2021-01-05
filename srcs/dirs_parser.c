@@ -67,27 +67,21 @@ void parse_the_dir(t_node *parent, unsigned short flags)
 		}
 		closedir(dir);
 		nodes_sorting_by_flags(&(parent->content), flags);
-		print_dir(parent, flags, W_LINE_BREAK);
+		print_dir(parent, flags, W_LINE_BREAK); // todo fix W-L-BREAK
 	}
 	else
 		error_handler(PERMISSION_DENIED, parent->name);
 }
 
-void dir_parser_facade(char **argv, unsigned short flags)
+void
+init_dirs_files_invalids(t_facade *facade, char **argv, unsigned short flags)
 {
-	struct stat stt;
-	t_node *dirs_head;
-	t_node files_parent;
-	t_node *invalid_nodes;
 	t_node *tmp;
+	struct stat stt;
 
-	ft_bzero(&files_parent, sizeof(t_node));
-	dirs_head = NULL;
-	invalid_nodes = NULL;
-	tmp = NULL;
-
+	ft_bzero(facade, sizeof(t_facade));
 	if (*argv == NULL)
-		dirs_head = stat_handler(new_t_dir(".", NULL), flags);
+		facade->dirs = stat_handler(new_t_dir(".", NULL), flags);
 	while (*argv != NULL)
 	{
 		if (lstat(*argv, &stt) != -1)
@@ -95,28 +89,26 @@ void dir_parser_facade(char **argv, unsigned short flags)
 			if (S_ISDIR(stt.st_mode))
 			{
 				tmp = stat_handler(new_t_dir(*argv, NULL), flags);
-				insert_order_by(&dirs_head, tmp, flags);
+				insert_order_by(&(facade->dirs), tmp, flags);
 			}
 			else
 			{
-				tmp = stat_handler(new_t_dir(*argv, &files_parent), flags);
-				insert_order_by(&(files_parent.content), tmp, flags);
+				tmp = stat_handler(new_t_dir(*argv, &(facade->files_parent)), flags);
+				insert_order_by(&(facade->files_parent.content), tmp, flags);
 			}
 		}
 		else
 		{
-			tmp = new_t_dir(*argv, &files_parent);
-			insert_order_by(&invalid_nodes, tmp, 0);
+			tmp = new_t_dir(*argv, NULL); // TODO check later
+			insert_order_by(&(facade->invalid_nodes), tmp, 0); // todo delete magic number
 		}
 		argv++;
 	}
+}
 
-	/**
-	 * TODO need add print_by_columns
-	 */
-	print_invalids(invalid_nodes);
-
-	print_one_column(files_parent.content, flags);
+void print_dirs(struct s_node *dirs_head, unsigned short flags)
+{
+	t_node *tmp;
 
 	tmp = dirs_head;
 	while (tmp)
@@ -140,9 +132,33 @@ void dir_parser_facade(char **argv, unsigned short flags)
 			tmp = tmp->next;
 	}
 
-	del_line_of_nodes(&(dirs_head->content));
+/**
+ * Solutioin for printing without flag 'R'
+ */
+//	tmp = dirs_head;
+//	while (tmp)
+//	{
+//		parse_the_dir(tmp, flags);
+//		del_line_of_nodes(&(tmp->content));
+//		tmp = tmp->next;
+//	}
+}
+
+void dir_parser_facade(char **argv, unsigned short flags)
+{
+	t_facade facade;
+
+	init_dirs_files_invalids(&facade, argv, flags);
+
+	print_invalids(facade.invalid_nodes);
+
+	print_one_column((facade.files_parent).content, flags);
+
+	print_dirs(facade.dirs, flags);
+
+	del_line_of_nodes(&(facade.dirs->content));
 
 
-	del_line_of_nodes(&(dirs_head));
-	del_line_of_nodes(&(files_parent.content));
+	del_line_of_nodes(&(facade.dirs));
+	del_line_of_nodes(&((facade.files_parent).content));
 }

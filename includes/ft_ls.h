@@ -29,7 +29,7 @@
 # define MEM_CHECK(x) if (!x) exit(2)
 
 /**
- * Flags error status.
+ * Flags error status. TODO fix comments for norminet
  */
 # define ILLEGAL_OPTION			1
 
@@ -49,7 +49,7 @@
 # define FALSE					0
 # define MORE					1
 # define LESS					-1
-# define SIX_MONTHS				15770000
+# define SIX_MONTHS				15770000 //todo fix later
 # define SYM_LINK_ARROW			" -> "
 # define DEFAULT_BUFF_SIZE		16
 
@@ -120,12 +120,12 @@ typedef struct		s_node
 	struct s_node	*next;
 }					t_node;
 
-//typedef struct		s_facade
-//{
-//	struct s_node	*dirs;
-//	struct s_node	files_parent;
-//	struct s_node	*invalid_nodes;
-//}					t_facade;
+typedef struct		s_facade
+{
+	struct s_node	*dirs;
+	struct s_node	files_parent;
+	struct s_node	*invalid_nodes;
+}					t_facade;
 
 /**
  * Utils.
