@@ -11,14 +11,7 @@ static char is_dummy_dir(t_node *node)
 	return (FALSE);
 }
 
-static char is_hidden_node(char *name)
-{
-	return (name[0] == '.') ? TRUE : FALSE;
-}
-
-/**
- * TODO can add dirent->namelen
- */
+//TODO can add dirent->namelen
 static t_node *stat_handler(t_node *node, unsigned short flags)
 {
 	struct passwd *passwd;
@@ -37,7 +30,8 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	node->size_in_bytes = stat.st_size;
 	node->status |= (S_ISDIR(stat.st_mode)) ? DIRECTORY : FILE;
 	node->status = (node->status & DIRECTORY && is_dummy_dir(node))
-				   ? DUMMY_DIR : node->status;
+				   ? DUMMY_DIR
+				   : node->status;
 	if (node->parent)
 	{
 		node->parent->total_size += node->blocks;
@@ -51,26 +45,26 @@ void parse_the_dir(t_node *parent, unsigned short flags)
 	DIR *dir;
 	struct dirent *dirent;
 	t_node *curr;
+	static char printing_mod;
 
 	if (!parent) return;
 	if ((dir = opendir(parent->path)))
 	{
 		while ((dirent = readdir(dir)))
 		{
-			if (is_hidden_node(dirent->d_name) &&
-				!(flags & get_flag_code('a') || flags & get_flag_code('f')))
+			if (dirent->d_name[0] == '.'
+				&& !(flags & get_flag_code('a') || flags & get_flag_code('f')))
 				continue;
 			curr = stat_handler(new_t_dir(dirent->d_name, parent), flags);
 			curr->next = parent->content;
 			parent->content = curr;
-//			insert_order_by(&(parent->content), curr, flags);
 		}
 		closedir(dir);
 		nodes_sorting_by_flags(&(parent->content), flags);
-		print_dir(parent, flags, W_LINE_BREAK); // todo fix W-L-BREAK
+		print_dir(parent, flags, printing_mod); // todo fix W-L-BREAK
 	}
-	else
-		error_handler(PERMISSION_DENIED, parent->name);
+	else error_handler(PERMISSION_DENIED, parent->name);
+	printing_mod = W_LINE_BREAK;
 }
 
 void
@@ -93,14 +87,15 @@ init_dirs_files_invalids(t_facade *facade, char **argv, unsigned short flags)
 			}
 			else
 			{
-				tmp = stat_handler(new_t_dir(*argv, &(facade->files_parent)), flags);
+				tmp = stat_handler(new_t_dir(*argv, &(facade->files_parent)),
+								   flags);
 				insert_order_by(&(facade->files_parent.content), tmp, flags);
 			}
 		}
 		else
 		{
 			tmp = new_t_dir(*argv, NULL); // TODO check later
-			insert_order_by(&(facade->invalid_nodes), tmp, 0); // todo delete magic number
+			insert_order_by(&(facade->invalid_nodes), tmp,0); // todo delete magic number
 		}
 		argv++;
 	}
@@ -111,37 +106,33 @@ void print_dirs(struct s_node *dirs_head, unsigned short flags)
 	t_node *tmp;
 
 	tmp = dirs_head;
-	while (tmp)
+	if (flags & get_flag_code('R'))
 	{
-		if (tmp->status == DIRECTORY)
+		while (tmp)
+		{
+			if (tmp->status == DIRECTORY)
+			{
+				parse_the_dir(tmp, flags);
+				if (tmp->content)
+				{
+					tmp = tmp->content;
+					continue;
+				}
+			}
+			while (!tmp->next && (tmp = tmp->parent))
+				del_line_of_nodes(&(tmp->content));
+			if (tmp) tmp = tmp->next;
+		}
+	}
+	else
+	{
+		while (tmp)
 		{
 			parse_the_dir(tmp, flags);
-			if (tmp->content)
-			{
-				tmp = tmp->content;
-				continue;
-			}
-		}
-		while (!tmp->next)
-		{
-			if (!(tmp = tmp->parent))
-				break;
 			del_line_of_nodes(&(tmp->content));
-		}
-		if (tmp)
 			tmp = tmp->next;
+		}
 	}
-
-/**
- * Solutioin for printing without flag 'R'
- */
-//	tmp = dirs_head;
-//	while (tmp)
-//	{
-//		parse_the_dir(tmp, flags);
-//		del_line_of_nodes(&(tmp->content));
-//		tmp = tmp->next;
-//	}
 }
 
 void dir_parser_facade(char **argv, unsigned short flags)
