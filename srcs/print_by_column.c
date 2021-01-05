@@ -46,7 +46,7 @@ void 				fill_columns(t_node ***columns, t_node *curr,
 }
 
 t_node				***create_columns(unsigned short num_of_columns,
-						   unsigned short num_of_rows)
+						unsigned short num_of_rows)
 {
 	unsigned short	i;
 	t_node			***columns;

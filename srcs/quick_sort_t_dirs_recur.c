@@ -73,8 +73,7 @@ t_node *quick_sort_nodes_recur(t_node *head, t_node *end,
 
 void nodes_sorting_by_flags(t_node **head, unsigned short flags)
 {
-	(void) flags;
-	if (flags & get_flag_code('f'))
+	if (flags & get_flag_code('f') || !head || !*head)
 		return;
 	else if (flags & get_flag_code('t'))
 	{

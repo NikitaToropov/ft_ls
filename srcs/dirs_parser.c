@@ -11,95 +11,138 @@ static char is_dummy_dir(t_node *node)
 	return (FALSE);
 }
 
-static void fill_the_dir_content(t_node *parent, unsigned short flags)
+static char is_hidden_node(char *name)
+{
+	return (name[0] == '.') ? TRUE : FALSE;
+}
+
+/**
+ * TODO can add dirent->namelen
+ */
+static t_node *stat_handler(t_node *node, unsigned short flags)
+{
+	struct passwd *passwd;
+	struct stat stat;
+
+	lstat(node->path, &(stat));
+	fill_time(node, flags, stat);
+	node->group_name = getgrgid(stat.st_gid)->gr_name;
+	fill_sym_link(node, flags, stat);
+	fill_file_mod(node, flags, stat);
+	node->owner_name = ((passwd = getpwuid(stat.st_uid)))
+					   ? ft_strdup(passwd->pw_name)
+					   : ft_itoa(stat.st_uid);
+	node->blocks = stat.st_blocks;
+	node->num_of_links = stat.st_nlink;
+	node->size_in_bytes = stat.st_size;
+	node->status |= (S_ISDIR(stat.st_mode)) ? DIRECTORY : FILE;
+	node->status = (node->status & DIRECTORY && is_dummy_dir(node))
+				   ? DUMMY_DIR : node->status;
+	if (node->parent)
+	{
+		node->parent->total_size += node->blocks;
+		fill_format(node->parent, flags, node);
+	}
+	return (node);
+}
+
+void parse_the_dir(t_node *parent, unsigned short flags)
 {
 	DIR *dir;
 	struct dirent *dirent;
-
-	if ((flags & get_flag_code('R')) || !(parent->parent))
-	{
-		dirent = NULL;
-		dir = NULL;
-		if ((dir = opendir(parent->path)))
-		{
-			while ((dirent = readdir(dir)))
-			{
-				if (dirent->d_name[0] == '.' && !(flags & get_flag_code('a')))
-					continue;
-				push_back(&(parent->content), dirent->d_name, parent);
-			}
-			closedir(dir);
-			parse_nodes_recursively(&(parent->content), flags);
-		}
-		else
-			parent->status |= PERMISSION_DENIED;
-	}
-}
-
-static void stat_handler(t_node *node, unsigned short flags)
-{
-	lstat(node->path, &(node->stat));
-	fill_time(node, flags);
-	fill_group_name(node, flags);
-	fill_sym_link(node, flags);
-	fill_file_mod(node, flags);
-	fill_owner_name(node, flags);
-	node->blocks = node->stat.st_blocks;
-	node->num_of_links = node->stat.st_nlink;
-	node->size_in_bytes = node->stat.st_size;
-	node->status |= (S_ISDIR(node->stat.st_mode)) ? DIRECTORY : FILE;
-	node->status |= (node->status & DIRECTORY && is_dummy_dir(node))
-					? DUMMY_DIR : 0;
-}
-
-
-void parse_nodes_recursively(t_node **content_head, unsigned short flags)
-{
 	t_node *curr;
-	t_node *parent;
-	long int sum_blocks;
 
-	nodes_sorting_by_flags(content_head, flags);
-	curr = *content_head;
-	if (!curr)
-		return;
-	parent = (*content_head)->parent;
-	sum_blocks = 0;
-	while (curr)
+	if (!parent) return;
+	if ((dir = opendir(parent->path)))
 	{
-		stat_handler(curr, flags);
-		fill_format(parent, flags, curr);
-		sum_blocks += (long int) curr->blocks;
-		if (curr->status == DIRECTORY) fill_the_dir_content(curr, flags);
-		curr = curr->next;
+		while ((dirent = readdir(dir)))
+		{
+			if (is_hidden_node(dirent->d_name) &&
+				!(flags & get_flag_code('a') || flags & get_flag_code('f')))
+				continue;
+			curr = stat_handler(new_t_dir(dirent->d_name, parent), flags);
+			curr->next = parent->content;
+			parent->content = curr;
+//			insert_order_by(&(parent->content), curr, flags);
+		}
+		closedir(dir);
+		nodes_sorting_by_flags(&(parent->content), flags);
+		print_dir(parent, flags, W_LINE_BREAK);
 	}
-	if (parent) parent->total_size = sum_blocks;
+	else
+		error_handler(PERMISSION_DENIED, parent->name);
 }
 
-void dir_parser_facade(t_facade *facade, char **argv, unsigned short flags)
+void dir_parser_facade(char **argv, unsigned short flags)
 {
 	struct stat stt;
+	t_node *dirs_head;
+	t_node files_parent;
+	t_node *invalid_nodes;
+	t_node *tmp;
+
+	ft_bzero(&files_parent, sizeof(t_node));
+	dirs_head = NULL;
+	invalid_nodes = NULL;
+	tmp = NULL;
 
 	if (*argv == NULL)
-		push_back(&(facade->dirs), ".", NULL);
+		dirs_head = stat_handler(new_t_dir(".", NULL), flags);
 	while (*argv != NULL)
 	{
 		if (lstat(*argv, &stt) != -1)
 		{
 			if (S_ISDIR(stt.st_mode))
-				push_back(&(facade->dirs), *argv, NULL);
+			{
+				tmp = stat_handler(new_t_dir(*argv, NULL), flags);
+				insert_order_by(&dirs_head, tmp, flags);
+			}
 			else
-				push_back(&(facade->files_parent.content), *argv,
-						  &(facade->files_parent));
+			{
+				tmp = stat_handler(new_t_dir(*argv, &files_parent), flags);
+				insert_order_by(&(files_parent.content), tmp, flags);
+			}
 		}
 		else
-			push_back(&(facade->invalid_nodes), *argv, NULL);
+		{
+			tmp = new_t_dir(*argv, &files_parent);
+			insert_order_by(&invalid_nodes, tmp, 0);
+		}
 		argv++;
 	}
-	if (facade->invalid_nodes)
-		nodes_sorting_by_flags(&(facade->invalid_nodes), 0);
-	if (facade->dirs)
-		parse_nodes_recursively(&(facade->dirs), flags);
-	if (facade->files_parent.content)
-		parse_nodes_recursively(&(facade->files_parent.content), flags);
+
+	/**
+	 * TODO need add print_by_columns
+	 */
+	print_invalids(invalid_nodes);
+
+	print_one_column(files_parent.content, flags);
+
+	tmp = dirs_head;
+	while (tmp)
+	{
+		if (tmp->status == DIRECTORY)
+		{
+			parse_the_dir(tmp, flags);
+			if (tmp->content)
+			{
+				tmp = tmp->content;
+				continue;
+			}
+		}
+		while (!tmp->next)
+		{
+			if (!(tmp = tmp->parent))
+				break;
+			del_line_of_nodes(&(tmp->content));
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+
+	del_line_of_nodes(&(dirs_head->content));
+
+
+	del_line_of_nodes(&(dirs_head));
+	del_line_of_nodes(&(files_parent.content));
 }
