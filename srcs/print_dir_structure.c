@@ -62,7 +62,7 @@ void print_invalids(t_node *head)
 			error_handler(NO_SUCH_FILE_OR_DIR, curr->name);
 			curr = curr->next;
 		}
-		del_line_of_nodes(&head);
+//		del_line_of_nodes(&head);
 	}
 }
 

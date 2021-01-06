@@ -153,9 +153,7 @@ void dir_parser_facade(char **argv, unsigned short flags)
 	else
 		simple_dir_printing(facade.dirs, flags);
 
-	del_line_of_nodes(&(facade.dirs->content));
-
-
+	del_line_of_nodes(&(facade.invalid_nodes));
 	del_line_of_nodes(&(facade.dirs));
 	del_line_of_nodes(&((facade.files_parent).content));
 }
