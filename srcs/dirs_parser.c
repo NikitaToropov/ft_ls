@@ -11,7 +11,6 @@ static char is_dummy_dir(t_node *node)
 	return (FALSE);
 }
 
-//TODO can add dirent->namelen
 static t_node *stat_handler(t_node *node, unsigned short flags)
 {
 	struct passwd *passwd;
@@ -40,7 +39,7 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	return (node);
 }
 
-void parse_the_dir(t_node *parent, unsigned short flags)
+static void parse_the_dir(t_node *parent, unsigned short flags)
 {
 	DIR *dir;
 	struct dirent *dirent;
@@ -95,43 +94,47 @@ init_dirs_files_invalids(t_facade *facade, char **argv, unsigned short flags)
 		else
 		{
 			tmp = new_t_dir(*argv, NULL); // TODO check later
-			insert_order_by(&(facade->invalid_nodes), tmp,0); // todo delete magic number
+			insert_order_by(&(facade->invalid_nodes), tmp,
+							0); // todo delete magic number
 		}
 		argv++;
 	}
 }
 
-void print_dirs(struct s_node *dirs_head, unsigned short flags)
+static void
+recursive_dir_printing(struct s_node *dirs_head, unsigned short flags)
 {
 	t_node *tmp;
 
 	tmp = dirs_head;
-	if (flags & get_flag_code('R'))
+	while (tmp)
 	{
-		while (tmp)
-		{
-			if (tmp->status == DIRECTORY)
-			{
-				parse_the_dir(tmp, flags);
-				if (tmp->content)
-				{
-					tmp = tmp->content;
-					continue;
-				}
-			}
-			while (!tmp->next && (tmp = tmp->parent))
-				del_line_of_nodes(&(tmp->content));
-			if (tmp) tmp = tmp->next;
-		}
-	}
-	else
-	{
-		while (tmp)
+		if (tmp->status == DIRECTORY)
 		{
 			parse_the_dir(tmp, flags);
-			del_line_of_nodes(&(tmp->content));
-			tmp = tmp->next;
+			if (tmp->content)
+			{
+				tmp = tmp->content;
+				continue;
+			}
 		}
+		while (!tmp->next && (tmp = tmp->parent))
+			del_line_of_nodes(&(tmp->content));
+		if (tmp) tmp = tmp->next;
+	}
+}
+
+
+static void simple_dir_printing(struct s_node *dirs_head, unsigned short flags)
+{
+	t_node *tmp;
+
+	tmp = dirs_head;
+	while (tmp)
+	{
+		parse_the_dir(tmp, flags);
+		del_line_of_nodes(&(tmp->content));
+		tmp = tmp->next;
 	}
 }
 
@@ -145,7 +148,10 @@ void dir_parser_facade(char **argv, unsigned short flags)
 
 	print_one_column((facade.files_parent).content, flags);
 
-	print_dirs(facade.dirs, flags);
+	if (flags & get_flag_code('R'))
+		recursive_dir_printing(facade.dirs, flags);
+	else
+		simple_dir_printing(facade.dirs, flags);
 
 	del_line_of_nodes(&(facade.dirs->content));
 
