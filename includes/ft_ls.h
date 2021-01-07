@@ -188,7 +188,7 @@ t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
 void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 void	print_invalids(t_node *head);
-void	print_dir(t_node *parent, unsigned short flags, char printing_mod);
+void	print_dir(t_node *parent, unsigned short flags, char *printing_mod);
 //void	print_dir(t_node *parent, unsigned short flags);
 
 
