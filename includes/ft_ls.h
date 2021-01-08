@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 14:13:50 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 16:00:03 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:18:59 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void				del_line_of_nodes(t_node **head);
  */
 void				fill_time(t_node *node, unsigned short flags,
 						struct stat stt);
-void				fill_sym_link(t_node *node, unsigned short flags, struct stat stt);
+void				fill_sym_link(t_node *node, struct stat stt);
 void				fill_file_mod(t_node *node, struct stat stt);
 void				fill_format(t_node *parent, t_node *curr);
 
