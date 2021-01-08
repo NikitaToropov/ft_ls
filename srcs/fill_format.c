@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_format.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/08 15:43:31 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/08 15:45:28 by cmissy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-static size_t width(int num)
+static size_t	width(int num)
 {
 	if (num >= 100000)
 	{
 		if (num >= 10000000)
 		{
-			if (num >= 1000000000) return 10;
-			if (num >= 100000000) return 9;
+			if (num >= 1000000000) return (10);
+			if (num >= 100000000) return (9);
 			return 8;
 		}
 		if (num >= 1000000) return 7;
@@ -29,9 +41,9 @@ static size_t width(int num)
 	}
 }
 
-void fill_format(t_node *parent, unsigned short flags, t_node *curr)
+void			fill_format(t_node *parent, unsigned short flags, t_node *curr)
 {
-	size_t len;
+	size_t		len;
 
 	(void) flags;
 	if (!parent || !curr)

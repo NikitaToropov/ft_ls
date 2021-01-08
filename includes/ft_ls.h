@@ -148,7 +148,7 @@ void				del_line_of_nodes(t_node **head);
 void				fill_time(t_node *node, unsigned short flags,
 						struct stat stt);
 void				fill_sym_link(t_node *node, unsigned short flags, struct stat stt);
-void				fill_file_mod(t_node *node, unsigned short flags, struct stat stt);
+void				fill_file_mod(t_node *node, struct stat stt);
 void				fill_format(t_node *parent, unsigned short flags, t_node *curr);
 
 /**
