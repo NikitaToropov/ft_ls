@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   comparators.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/08 15:28:25 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/08 15:29:55 by cmissy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-char compare_by_date(const t_node *first, const t_node *second)
+char	compare_by_date(const t_node *first, const t_node *second)
 {
 	if (first->node_sec_time > second->node_sec_time)
 		return (LESS);
@@ -15,7 +27,7 @@ char compare_by_date(const t_node *first, const t_node *second)
 		return (MORE);
 }
 
-char compare_by_date_reverse(const t_node *first, const t_node *second)
+char	compare_by_date_reverse(const t_node *first, const t_node *second)
 {
 	if (compare_by_date(first, second) == LESS)
 		return (MORE);
@@ -23,7 +35,7 @@ char compare_by_date_reverse(const t_node *first, const t_node *second)
 		return (LESS);
 }
 
-char compare_lexicographic(const t_node *first, const t_node *second)
+char	compare_lexicographic(const t_node *first, const t_node *second)
 {
 	if (ft_strcmp(first->name, second->name) > 0)
 		return (MORE);
@@ -31,7 +43,7 @@ char compare_lexicographic(const t_node *first, const t_node *second)
 		return (LESS);
 }
 
-char compare_lexicographic_reverse(const t_node *first, const t_node *second)
+char	compare_lexicographic_reverse(const t_node *first, const t_node *second)
 {
 	if (ft_strcmp(first->name, second->name) > 0)
 		return (LESS);
@@ -39,7 +51,7 @@ char compare_lexicographic_reverse(const t_node *first, const t_node *second)
 		return (MORE);
 }
 
-char default_for_pushing_back(const t_node *first, const t_node *second)
+char	default_for_pushing_back(const t_node *first, const t_node *second)
 {
 	(void)first;
 	(void)second;

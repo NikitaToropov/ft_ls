@@ -25,8 +25,6 @@ C_FILES = comparators.c \
 		print_by_column.c \
 		print_long_listing.c \
 		quick_sort_t_dirs_recur.c \
-#		fill_group_name.c \
-#		fill_owner_name.c \
 
 HEADER = $(INCLUDES)/ft_ls.h
 SRCS = $(addprefix $(DIR_S)/,$(C_FILES))

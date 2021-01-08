@@ -19,8 +19,8 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	lstat(node->path, &(stat));
 	fill_time(node, flags, stat);
 	node->group_name = getgrgid(stat.st_gid)->gr_name;
-	fill_sym_link(node, flags, stat);
-	fill_file_mod(node, flags, stat);
+	fill_sym_link(node, stat);
+	fill_file_mod(node, stat);
 	node->owner_name = ((passwd = getpwuid(stat.st_uid)))
 					   ? ft_strdup(passwd->pw_name)
 					   : ft_itoa(stat.st_uid);
@@ -34,7 +34,7 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	if (node->parent)
 	{
 		node->parent->total_size += node->blocks;
-		fill_format(node->parent, flags, node);
+		fill_format(node->parent, node);
 	}
 	return (node);
 }
