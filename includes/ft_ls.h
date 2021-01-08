@@ -169,8 +169,6 @@ char				default_for_pushing_back(const t_node *first,
  */
 unsigned short		flags_parser_facade(char ***argv);
 void				dir_parser_facade(char **argv, unsigned short flags);
-//void				parse_nodes_recursively(t_node **content_head,
-//						unsigned short flags);
 
 /**
  * Sorting.
