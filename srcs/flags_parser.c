@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flags_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/08 16:34:41 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/08 16:37:21 by cmissy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-unsigned short get_flag_code(char flag)
+unsigned short		get_flag_code(char flag)
 {
-	unsigned short result;
-	size_t i;
+	unsigned short	result;
+	size_t			i;
 
 	result = 0;
 	i = 0;
@@ -16,7 +28,7 @@ unsigned short get_flag_code(char flag)
 	return (result);
 }
 
-void flags_handler(char flag, unsigned short *flags)
+static void			flags_handler(char flag, unsigned short *flags)
 {
 	if (flag == 'U')
 		*flags &= ~(get_flag_code('u'));
@@ -24,10 +36,10 @@ void flags_handler(char flag, unsigned short *flags)
 		*flags &= ~(get_flag_code('U'));
 }
 
-unsigned short parse_the_flags_string(char *flags)
+unsigned short		parse_the_flags_string(char *flags)
 {
-	unsigned short result;
-	unsigned short flag_code;
+	unsigned short	result;
+	unsigned short	flag_code;
 
 	result = 0;
 	while (*flags)
@@ -41,9 +53,9 @@ unsigned short parse_the_flags_string(char *flags)
 	return (result);
 }
 
-unsigned short flags_parser_facade(char ***argv)
+unsigned short		flags_parser_facade(char ***argv)
 {
-	unsigned short result;
+	unsigned short	result;
 
 	result = 0;
 	(*argv)++;
