@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void				print_columns(t_node ***columns, size_t width)
+static void			print_columns(t_node ***columns, size_t width)
 {
 	unsigned short	i;
 	unsigned short	j;
@@ -23,11 +23,8 @@ void				print_columns(t_node ***columns, size_t width)
 	}
 }
 
-/**
- * TODO need to optimize (general flow for allocation and filling)
- */
-void 				fill_columns(t_node ***columns, t_node *curr,
-					  unsigned short cols, unsigned rows)
+static void			fill_columns(t_node ***columns, t_node *curr,
+								unsigned short cols, unsigned rows)
 {
 	unsigned short	i;
 	unsigned short	j;
@@ -45,8 +42,8 @@ void 				fill_columns(t_node ***columns, t_node *curr,
 	}
 }
 
-t_node				***create_columns(unsigned short num_of_columns,
-						unsigned short num_of_rows)
+static t_node		***create_columns(unsigned short num_of_columns,
+								unsigned short num_of_rows)
 {
 	unsigned short	i;
 	t_node			***columns;
@@ -56,16 +53,16 @@ t_node				***create_columns(unsigned short num_of_columns,
 			(num_of_rows + 1))));
 	while (i < num_of_rows)
 		MEM_CHECK((columns[i++] = (t_node **)ft_memalloc(sizeof(t_node *) *
-				(num_of_columns + 1))));
+														(num_of_columns + 1))));
 	return (columns);
 }
 
-void destruct_columns(t_node ***columns)
+static void			destruct_columns(t_node ***columns)
 {
 	unsigned short	i;
 
 	if (!columns)
-		return;
+		return ;
 	i = 0;
 	while (columns[i])
 		free(columns[i++]);
@@ -79,15 +76,14 @@ void				print_by_columns(t_node *parent)
 	unsigned short	num_of_columns;
 	unsigned short	num_of_rows;
 
-	(void) parent;
+	(void)parent;
 	columns = NULL;
 	ioctl(0, TIOCGWINSZ, &w);
 	num_of_columns = w.ws_col / (parent->format.name_len + 1);
 	num_of_rows = parent->format.num_of_files / num_of_columns +
-				  ((parent->format.num_of_files % num_of_columns == 0) ? 0 : 1);
+			((parent->format.num_of_files % num_of_columns == 0) ? 0 : 1);
 	columns = create_columns(num_of_columns, num_of_rows);
 	fill_columns(columns, parent->content, num_of_columns, num_of_rows);
 	print_columns(columns, parent->format.name_len);
 	destruct_columns(columns);
 }
-

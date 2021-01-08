@@ -1,9 +1,9 @@
 #include "ft_ls.h"
 
-void del_t_node(t_node **node)
+static void	del_t_node(t_node **node)
 {
 	if (!*node)
-		return;
+		return ;
 	if ((*node)->name)
 		free((*node)->name);
 	if ((*node)->path)
@@ -16,9 +16,9 @@ void del_t_node(t_node **node)
 	*node = NULL;
 }
 
-t_node *new_t_dir(char *name, t_node *parent)
+t_node		*new_t_dir(char *name, t_node *parent)
 {
-	t_node *new;
+	t_node	*new;
 
 	MEM_CHECK((new = ft_memalloc(sizeof(t_node))));
 	new->name = ft_strdup(name);
@@ -29,13 +29,13 @@ t_node *new_t_dir(char *name, t_node *parent)
 	return (new);
 }
 
-void del_line_of_nodes(t_node **head)
+void		del_line_of_nodes(t_node **head)
 {
-	t_node *next;
-	t_node *curr;
+	t_node	*next;
+	t_node	*curr;
 
 	if (!head || !*head)
-		return;
+		return ;
 	curr = *head;
 	while (curr)
 	{
@@ -46,11 +46,11 @@ void del_line_of_nodes(t_node **head)
 	*head = NULL;
 }
 
-void insert(t_node **head, t_node *new,
+void		insert(t_node **head, t_node *new,
 			char comparator(const t_node *, const t_node *))
 {
-	t_node *prev;
-	t_node *next;
+	t_node	*prev;
+	t_node	*next;
 
 	if (!*head)
 		*head = new;
@@ -76,10 +76,10 @@ void insert(t_node **head, t_node *new,
 	}
 }
 
-void insert_order_by(t_node **head, t_node *new, unsigned short flags)
+void		insert_order_by(t_node **head, t_node *new, unsigned short flags)
 {
 	if (!head || !new)
-		return;
+		return ;
 	else if (flags & get_flag_code('f'))
 		insert(head, new, default_for_pushing_back);
 	else if (flags & get_flag_code('t'))
