@@ -64,7 +64,6 @@ t_node			*quick_sort_nodes_recur(t_node *head, t_node *end,
 	t_node		*new_end;
 	t_node		*pivot;
 	t_node		*tmp;
-	t_facade	*facade
 
 	if (!head || head == end || !comparator)
 		return (head);
