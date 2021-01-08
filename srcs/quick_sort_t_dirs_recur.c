@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 16:54:10 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 16:56:38 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 18:55:02 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,57 +19,59 @@ t_node			*get_tail(t_node *node)
 	return (node);
 }
 
-t_node			*partition(t_node *head, t_node *end, t_node **new_head,
+void			init_structure(t_quick_sort *structure, t_node *head,
+								t_node *end)
+{
+	structure->pivot = end;
+	structure->prev = NULL;
+	structure->cur = head;
+	structure->tail = structure->pivot;
+	structure->tmp = NULL;
+}
+
+t_node			*partition(t_quick_sort qss, t_node **new_head,
 							t_node **new_end,
 							char comparator(const t_node *, const t_node *))
 {
-	t_node *pivot;
-	t_node *prev;
-	t_node *cur;
-	t_node *tail;
-	t_node *tmp;
-
-	pivot = end;
-	prev = NULL;
-	cur = head;
-	tail = pivot;
-	while (cur != pivot)
+	while (qss.cur != qss.pivot)
 	{
-		if (comparator(cur, pivot) == LESS)
+		if (comparator(qss.cur, qss.pivot) == LESS)
 		{
-			*new_head = (*new_head == NULL) ? cur : *new_head;
-			prev = cur;
-			cur = cur->next;
+			*new_head = (*new_head == NULL) ? qss.cur : *new_head;
+			qss.prev = qss.cur;
+			qss.cur = qss.cur->next;
 		}
 		else
 		{
-			if (prev)
-				prev->next = cur->next;
-			tmp = cur->next;
-			cur->next = NULL;
-			tail->next = cur;
-			tail = cur;
-			cur = tmp;
+			if (qss.prev)
+				qss.prev->next = qss.cur->next;
+			qss.tmp = qss.cur->next;
+			qss.cur->next = NULL;
+			qss.tail->next = qss.cur;
+			qss.tail = qss.cur;
+			qss.cur = qss.tmp;
 		}
 	}
-	*new_head = (*new_head == NULL) ? pivot : *new_head;
-	*new_end = tail;
-	return (pivot);
+	*new_head = (*new_head == NULL) ? qss.pivot : *new_head;
+	*new_end = qss.tail;
+	return (qss.pivot);
 }
 
 t_node			*quick_sort_nodes_recur(t_node *head, t_node *end,
 								char comparator(const t_node *, const t_node *))
 {
-	t_node		*new_head;
-	t_node		*new_end;
-	t_node		*pivot;
-	t_node		*tmp;
+	t_node			*new_head;
+	t_node			*new_end;
+	t_node			*pivot;
+	t_node			*tmp;
+	t_quick_sort	structure;
 
 	if (!head || head == end || !comparator)
 		return (head);
 	new_head = NULL;
 	new_end = NULL;
-	pivot = partition(head, end, &new_head, &new_end, comparator);
+	init_structure(&structure, head, end);
+	pivot = partition(structure, &new_head, &new_end, comparator);
 	if (new_head != pivot)
 	{
 		tmp = new_head;

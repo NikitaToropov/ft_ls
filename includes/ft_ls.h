@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 14:13:50 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 16:18:59 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 18:45:35 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@
  */
 # define FLAGS					"lRartuUfg1" // todo del "1" flag
 
-
 typedef struct		s_dir_format
 {
 	size_t			num_of_files;
@@ -119,6 +118,15 @@ typedef struct		s_node
 	struct s_node	*parent;
 	struct s_node	*next;
 }					t_node;
+
+typedef struct		s_quick_sort
+{
+	t_node			*pivot;
+	t_node			*prev;
+	t_node			*cur;
+	t_node			*tail;
+	t_node			*tmp;
+}					t_quick_sort;
 
 typedef struct		s_facade
 {
