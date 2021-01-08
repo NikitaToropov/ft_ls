@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_dir_structure.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/08 16:41:27 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/08 16:42:52 by cmissy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-void print_dir(t_node *parent, unsigned short flags, char *printing_mod)
+void		print_dir(t_node *parent, unsigned short flags, char *printing_mod)
 {
 	if (parent->status == DUMMY_DIR)
-		return;
+		return ;
 	if (parent->path)
 	{
 		if (*printing_mod != WO_DIR_DESCRIPTION)
@@ -14,7 +26,7 @@ void print_dir(t_node *parent, unsigned short flags, char *printing_mod)
 			if (parent->status & PERMISSION_DENIED)
 			{
 				error_handler(PERMISSION_DENIED, parent->name);
-				return;
+				return ;
 			}
 		}
 		if (parent->content &&
@@ -22,19 +34,15 @@ void print_dir(t_node *parent, unsigned short flags, char *printing_mod)
 			ft_printf("total %li\n", parent->total_size);
 	}
 	*printing_mod = W_LINE_BREAK;
-
-	/**
-	 * TODO add printing_by_columns
-	 */
 //	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
 		print_one_column(parent->content, flags);
 //	else
 //		print_by_columns(parent);
 }
 
-void print_invalids(t_node *head)
+void		print_invalids(t_node *head)
 {
-	t_node *curr;
+	t_node	*curr;
 
 	if (head)
 	{
