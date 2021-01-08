@@ -34,7 +34,7 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	if (node->parent)
 	{
 		node->parent->total_size += node->blocks;
-		fill_format(node->parent, flags, node);
+		fill_format(node->parent, node);
 	}
 	return (node);
 }

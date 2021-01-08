@@ -6,48 +6,59 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 15:43:31 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 15:45:28 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:18:24 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static size_t	width(int num)
+static size_t	less_than_a_hundred_thousand(int num)
 {
-	if (num >= 100000)
+	if (num >= 1000)
 	{
-		if (num >= 10000000)
-		{
-			if (num >= 1000000000) return (10);
-			if (num >= 100000000) return (9);
-			return 8;
-		}
-		if (num >= 1000000) return 7;
-		return 6;
+		if (num >= 10000)
+			return (5);
+		return (4);
 	}
 	else
 	{
-		if (num >= 1000)
-		{
-			if (num >= 10000) return 5;
-			return 4;
-		}
-		else
-		{
-			if (num >= 100) return 3;
-			if (num >= 10) return 2;
-		}
-		return 1;
+		if (num >= 100)
+			return (3);
+		if (num >= 10)
+			return (2);
 	}
+	return (1);
 }
 
-void			fill_format(t_node *parent, unsigned short flags, t_node *curr)
+static size_t	more_than_or_equal_to_one_hundred_thousand(int num)
+{
+	if (num >= 10000000)
+	{
+		if (num >= 1000000000)
+			return (10);
+		if (num >= 100000000)
+			return (9);
+		return (8);
+	}
+	if (num >= 1000000)
+		return (7);
+	return (6);
+}
+
+static size_t	width(int num)
+{
+	if (num >= 100000)
+		return (more_than_or_equal_to_one_hundred_thousand(num));
+	else
+		return (less_than_a_hundred_thousand(num));
+}
+
+void			fill_format(t_node *parent, t_node *curr)
 {
 	size_t		len;
 
-	(void) flags;
 	if (!parent || !curr)
-		return;
+		return ;
 	parent->format.num_of_files++;
 	if ((len = width(curr->size_in_bytes)) > parent->format.size_len)
 		parent->format.size_len = len;

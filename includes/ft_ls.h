@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 14:13:50 by cmissy            #+#    #+#             */
-/*   Updated: 2020/09/20 16:42:18 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:00:03 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@
 /**
  * All flags.
  */
-# define FLAGS					"lRartuUfg"
+# define FLAGS					"lRartuUfg1" // todo del "1" flag
 
 
 typedef struct		s_dir_format
@@ -149,7 +149,7 @@ void				fill_time(t_node *node, unsigned short flags,
 						struct stat stt);
 void				fill_sym_link(t_node *node, unsigned short flags, struct stat stt);
 void				fill_file_mod(t_node *node, struct stat stt);
-void				fill_format(t_node *parent, unsigned short flags, t_node *curr);
+void				fill_format(t_node *parent, t_node *curr);
 
 /**
  * t_node comparators.
@@ -182,12 +182,9 @@ t_node				*quick_sort_nodes_recur(t_node *head, t_node *end,
 /**
  * Printing.
  */
-//void				print_dirs_struct(t_facade facade, unsigned short flags);
 void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 void	print_invalids(t_node *head);
 void	print_dir(t_node *parent, unsigned short flags, char *printing_mod);
-//void	print_dir(t_node *parent, unsigned short flags);
-
 
 #endif
