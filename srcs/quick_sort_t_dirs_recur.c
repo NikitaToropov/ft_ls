@@ -6,7 +6,19 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 16:54:10 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 16:56:38 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/08 17:51:42 by enikole          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quick_sort_t_dirs_recur.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/08 16:54:10 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/08 17:50:56 by enikole          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +76,6 @@ t_node			*quick_sort_nodes_recur(t_node *head, t_node *end,
 	t_node		*new_end;
 	t_node		*pivot;
 	t_node		*tmp;
-	t_facade	*facade
 
 	if (!head || head == end || !comparator)
 		return (head);
