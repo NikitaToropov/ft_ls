@@ -54,3 +54,41 @@ void		print_invalids(t_node *head)
 		}
 	}
 }
+
+void			recursive_dir_printing(struct s_node *dirs_head,
+											  unsigned short flags, char *printing_mod)
+{
+	t_node			*tmp;
+
+	tmp = dirs_head;
+	while (tmp)
+	{
+		if (tmp->status == DIRECTORY)
+		{
+			parse_the_dir(tmp, flags, printing_mod);
+			if (tmp->content)
+			{
+				tmp = tmp->content;
+				continue;
+			}
+		}
+		while (!tmp->next && (tmp = tmp->parent))
+			del_line_of_nodes(&(tmp->content));
+		if (tmp) tmp = tmp->next;
+	}
+}
+
+void			simple_dir_printing(struct s_node *dirs_head,
+										   unsigned short flags, char *printing_mod)
+{
+	t_node			*tmp;
+
+	tmp = dirs_head;
+	while (tmp)
+	{
+		parse_the_dir(tmp, flags, printing_mod);
+		del_line_of_nodes(&(tmp->content));
+		tmp = tmp->next;
+	}
+}
+

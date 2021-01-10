@@ -149,6 +149,8 @@ t_node				*new_t_dir(char *name, t_node *parent);
 void				insert_order_by(t_node **head, t_node *new,
 						unsigned short flags);
 void				del_line_of_nodes(t_node **head);
+char				is_dummy_dir(t_node *node);
+
 
 /**
  * Stat handling functions.
@@ -177,6 +179,11 @@ char				default_for_pushing_back(const t_node *first,
  */
 unsigned short		flags_parser_facade(char ***argv);
 void				dir_parser_facade(char **argv, unsigned short flags);
+void					parse_the_dir(t_node *parent, unsigned short flags, char *printing_mod);
+void			simple_dir_printing(struct s_node *dirs_head,
+									unsigned short flags, char *printing_mod);
+void			recursive_dir_printing(struct s_node *dirs_head,
+									unsigned short flags, char *printing_mod);
 
 /**
  * Sorting.
@@ -194,5 +201,6 @@ void	print_one_column(t_node *head, unsigned short flags);
 void	print_by_columns(t_node *parent);
 void	print_invalids(t_node *head);
 void	print_dir(t_node *parent, unsigned short flags, char *printing_mod);
+
 
 #endif

@@ -1,5 +1,16 @@
 #include "ft_ls.h"
 
+char		is_dummy_dir(t_node *node)
+{
+	if (node->parent)
+	{
+		if (ft_strcmp(node->name, ".") == 0
+			|| ft_strcmp(node->name, "..") == 0)
+			return (TRUE);
+	}
+	return (FALSE);
+}
+
 char		*ft_pathjoin(char *first, char *second)
 {
 	size_t	i;

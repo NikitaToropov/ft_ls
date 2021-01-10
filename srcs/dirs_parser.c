@@ -1,20 +1,9 @@
 #include "ft_ls.h"
 
-static char is_dummy_dir(t_node *node)
+static t_node		*stat_handler(t_node *node, unsigned short flags)
 {
-	if (node->parent)
-	{
-		if (ft_strcmp(node->name, ".") == 0
-			|| ft_strcmp(node->name, "..") == 0)
-			return (TRUE);
-	}
-	return (FALSE);
-}
-
-static t_node *stat_handler(t_node *node, unsigned short flags)
-{
-	struct passwd *passwd;
-	struct stat stat;
+	struct passwd	*passwd;
+	struct stat		stat;
 
 	lstat(node->path, &(stat));
 	fill_time(node, flags, stat);
@@ -22,15 +11,15 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	fill_sym_link(node, stat);
 	fill_file_mod(node, stat);
 	node->owner_name = ((passwd = getpwuid(stat.st_uid)))
-					   ? ft_strdup(passwd->pw_name)
-					   : ft_itoa(stat.st_uid);
+						? ft_strdup(passwd->pw_name)
+						: ft_itoa(stat.st_uid);
 	node->blocks = stat.st_blocks;
 	node->num_of_links = stat.st_nlink;
 	node->size_in_bytes = stat.st_size;
 	node->status |= (S_ISDIR(stat.st_mode)) ? DIRECTORY : FILE;
 	node->status = (node->status & DIRECTORY && is_dummy_dir(node))
-				   ? DUMMY_DIR
-				   : node->status;
+					? DUMMY_DIR
+					: node->status;
 	if (node->parent)
 	{
 		node->parent->total_size += node->blocks;
@@ -39,14 +28,15 @@ static t_node *stat_handler(t_node *node, unsigned short flags)
 	return (node);
 }
 
-static void
-parse_the_dir(t_node *parent, unsigned short flags, char *printing_mod)
+void			parse_the_dir(t_node *parent, unsigned short flags,
+									char *printing_mod)
 {
-	DIR *dir;
-	struct dirent *dirent;
-	t_node *curr;
+	DIR				*dir;
+	struct dirent	*dirent;
+	t_node			*curr;
 
-	if (!parent) return;
+	if (!parent)
+		return;
 	if ((dir = opendir(parent->path)))
 	{
 		while ((dirent = readdir(dir)))
@@ -60,16 +50,17 @@ parse_the_dir(t_node *parent, unsigned short flags, char *printing_mod)
 		}
 		closedir(dir);
 		nodes_sorting_by_flags(&(parent->content), flags);
-		print_dir(parent, flags, printing_mod); // todo fix W-L-BREAK
+		print_dir(parent, flags, printing_mod);
 	}
-	else error_handler(PERMISSION_DENIED, parent->name);
+	else
+		error_handler(PERMISSION_DENIED, parent->name);
 }
 
-void
-init_dirs_files_invalids(t_facade *facade, char **argv, unsigned short flags)
+static void			init_dirs_files_invalids(t_facade *facade, char **argv,
+								 			unsigned short flags)
 {
-	t_node *tmp;
-	struct stat stt;
+	t_node			*tmp;
+	struct stat		stt;
 
 	ft_bzero(facade, sizeof(t_facade));
 	if (*argv == NULL)
@@ -86,82 +77,37 @@ init_dirs_files_invalids(t_facade *facade, char **argv, unsigned short flags)
 			else
 			{
 				tmp = stat_handler(new_t_dir(*argv, &(facade->files_parent)),
-								   flags);
+									flags);
 				insert_order_by(&(facade->files_parent.content), tmp, flags);
 			}
 		}
 		else
 		{
-			tmp = new_t_dir(*argv, NULL); // TODO check later
-			insert_order_by(&(facade->invalid_nodes), tmp,
-							0); // todo delete magic number
+			tmp = new_t_dir(*argv, NULL);
+			insert_order_by(&(facade->invalid_nodes), tmp,0);
 		}
 		argv++;
 	}
 }
 
-static void
-recursive_dir_printing(struct s_node *dirs_head, unsigned short flags,
-					   char *printing_mod)
+void				dir_parser_facade(char **argv, unsigned short flags)
 {
-	t_node *tmp;
-
-	tmp = dirs_head;
-	while (tmp)
-	{
-		if (tmp->status == DIRECTORY)
-		{
-			parse_the_dir(tmp, flags, printing_mod);
-			if (tmp->content)
-			{
-				tmp = tmp->content;
-				continue;
-			}
-		}
-		while (!tmp->next && (tmp = tmp->parent))
-			del_line_of_nodes(&(tmp->content));
-		if (tmp) tmp = tmp->next;
-	}
-}
-
-
-static void simple_dir_printing(struct s_node *dirs_head, unsigned short flags,
-								char *printing_mod)
-{
-	t_node *tmp;
-
-	tmp = dirs_head;
-	while (tmp)
-	{
-		parse_the_dir(tmp, flags, printing_mod);
-		del_line_of_nodes(&(tmp->content));
-		tmp = tmp->next;
-	}
-}
-
-void dir_parser_facade(char **argv, unsigned short flags)
-{
-	t_facade facade;
-	char printing_mod;
+	t_facade		facade;
+	char			printing_mod;
 
 	init_dirs_files_invalids(&facade, argv, flags);
 	print_invalids(facade.invalid_nodes);
 	print_one_column((facade.files_parent).content, flags);
-
 	if (facade.files_parent.content)
 		printing_mod = W_LINE_BREAK;
 	else if (!facade.files_parent.content && facade.dirs && !(facade.dirs->next))
 		printing_mod = WO_DIR_DESCRIPTION;
 	else
 		printing_mod = WO_LINE_BREAK;
-
-
-
 	if (flags & get_flag_code('R'))
 		recursive_dir_printing(facade.dirs, flags, &printing_mod);
 	else
 		simple_dir_printing(facade.dirs, flags, &printing_mod);
-
 	del_line_of_nodes(&(facade.invalid_nodes));
 	del_line_of_nodes(&(facade.dirs));
 	del_line_of_nodes(&((facade.files_parent).content));
