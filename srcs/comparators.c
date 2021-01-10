@@ -18,7 +18,7 @@ char	compare_by_date(const t_node *first, const t_node *second)
 		return (LESS);
 	else if (first->node_sec_time == second->node_sec_time)
 	{
-		if (first->node_nsec_time > second->node_nsec_time)
+		if (first->node_nsec_time >= second->node_nsec_time)
 			return (LESS);
 		else
 			return (MORE);

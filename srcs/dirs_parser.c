@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 13:16:37 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/10 14:30:50 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 14:52:08 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,22 @@ static t_node		*stat_handler(t_node *node, unsigned short flags)
 	return (node);
 }
 
+static void			im_so_sad_very_very_sad(t_node *parent, t_node *tmp,
+											t_node *curr)
+{
+	if (parent->content)
+		tmp->next = curr;
+	else
+		parent->content = curr;
+}
+
 void				parse_the_dir(t_node *parent, unsigned short flags,
 									char *printing_mod)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
 	t_node			*curr;
+	t_node			*tmp;
 
 	if (!parent)
 		return ;
@@ -57,8 +67,8 @@ void				parse_the_dir(t_node *parent, unsigned short flags,
 				&& !(flags & get_flag_code('a') || flags & get_flag_code('f')))
 				continue;
 			curr = stat_handler(new_t_dir(dirent->d_name, parent), flags);
-			curr->next = parent->content;
-			parent->content = curr;
+			im_so_sad_very_very_sad(parent, tmp, curr);
+			tmp = curr;
 		}
 		closedir(dir);
 		nodes_sorting_by_flags(&(parent->content), flags);
