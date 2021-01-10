@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/10 13:16:37 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/10 14:10:04 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 14:30:50 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ void				dir_parser_facade(char **argv, unsigned short flags)
 	else
 		printing_mod = WO_LINE_BREAK;
 	print_invalids(facade.invalid_nodes);
-	print_dir(&(facade.files_parent), flags, &printing_mod);
+	if (facade.files_parent.content)
+		print_dir(&(facade.files_parent), flags, &printing_mod);
 	if (flags & get_flag_code('R'))
 		recursive_dir_printing(facade.dirs, flags, &printing_mod);
 	else
