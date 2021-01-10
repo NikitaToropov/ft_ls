@@ -59,7 +59,6 @@ void			parse_the_dir(t_node *parent, unsigned short flags,
 static void			init_dirs_files_invalids(t_facade *facade, char **argv,
 								 			unsigned short flags)
 {
-	t_node			*tmp;
 	struct stat		stt;
 
 	ft_bzero(facade, sizeof(t_facade));
@@ -70,22 +69,16 @@ static void			init_dirs_files_invalids(t_facade *facade, char **argv,
 		if (lstat(*argv, &stt) != -1)
 		{
 			if (S_ISDIR(stt.st_mode))
-			{
-				tmp = stat_handler(new_t_dir(*argv, NULL), flags);
-				insert_order_by(&(facade->dirs), tmp, flags);
-			}
+				insert_order_by(&(facade->dirs),
+					stat_handler(new_t_dir(*argv, NULL), flags), flags);
 			else
-			{
-				tmp = stat_handler(new_t_dir(*argv, &(facade->files_parent)),
-									flags);
-				insert_order_by(&(facade->files_parent.content), tmp, flags);
-			}
+				insert_order_by(&(facade->files_parent.content),
+					stat_handler(new_t_dir(*argv, &(facade->files_parent)),
+						flags), flags);
 		}
 		else
-		{
-			tmp = new_t_dir(*argv, NULL);
-			insert_order_by(&(facade->invalid_nodes), tmp,0);
-		}
+			insert_order_by(&(facade->invalid_nodes), new_t_dir(*argv, NULL),
+				0);
 		argv++;
 	}
 }
