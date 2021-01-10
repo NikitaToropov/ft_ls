@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 15:37:23 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/10 13:09:26 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 15:28:26 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ void			fill_file_mod(t_node *node, struct stat stt)
 	node->file_mod[1] = (stt.st_mode & S_IRUSR) ? 'r' : '-';
 	node->file_mod[2] = (stt.st_mode & S_IWUSR) ? 'w' : '-';
 	node->file_mod[3] = (stt.st_mode & S_IXUSR) ? 'x' : '-';
+	node->file_mod[3] = (stt.st_mode & S_ISUID) ? 'S' : node->file_mod[3];
 	node->file_mod[4] = (stt.st_mode & S_IRGRP) ? 'r' : '-';
 	node->file_mod[5] = (stt.st_mode & S_IWGRP) ? 'w' : '-';
 	node->file_mod[6] = (stt.st_mode & S_IXGRP) ? 'x' : '-';
+	node->file_mod[6] = (stt.st_mode & S_ISGID) ? 's' : node->file_mod[6];
 	node->file_mod[7] = (stt.st_mode & S_IROTH) ? 'r' : '-';
 	node->file_mod[8] = (stt.st_mode & S_IWOTH) ? 'w' : '-';
 	node->file_mod[9] = (stt.st_mode & S_IXOTH) ? 'x' : '-';

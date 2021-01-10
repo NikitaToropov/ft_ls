@@ -16,7 +16,7 @@ static void	print_permission_denied(char *arg)
 {
 	write(STDERR_FILENO, "ls: ", 4);
 	write(STDERR_FILENO, arg, ft_strlen(arg));
-	write(STDERR_FILENO, ": No such file or directory\n", 28);
+	write(STDERR_FILENO, ": Permission denied\n", 20);
 }
 
 static void	print_no_such_file_or_dir(char *arg)
