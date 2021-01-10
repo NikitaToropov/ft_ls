@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 16:41:27 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/10 13:14:21 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 13:23:26 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void			print_dir(t_node *parent, unsigned short flags,
 			ft_printf("total %li\n", parent->total_size);
 	}
 	*printing_mod = W_LINE_BREAK;
-//	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
+	if (flags & get_flag_code('l') || flags & get_flag_code('g'))
 		print_one_column(parent->content, flags);
-//	else
-//		print_by_columns(parent);
+	else
+		print_by_columns(parent);
 }
 
 void			print_invalids(t_node *head)
