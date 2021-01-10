@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dirs_parser.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/10 13:16:37 by cmissy            #+#    #+#             */
+/*   Updated: 2021/01/10 13:27:50 by cmissy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static t_node		*stat_handler(t_node *node, unsigned short flags)
@@ -10,9 +22,9 @@ static t_node		*stat_handler(t_node *node, unsigned short flags)
 	node->group_name = getgrgid(stat.st_gid)->gr_name;
 	fill_sym_link(node, stat);
 	fill_file_mod(node, stat);
-	node->owner_name = ((passwd = getpwuid(stat.st_uid)))
-						? ft_strdup(passwd->pw_name)
-						: ft_itoa(stat.st_uid);
+	passwd = getpwuid(stat.st_uid);
+	node->owner_name = (passwd) ? ft_strdup(passwd->pw_name)
+								: ft_itoa(stat.st_uid);
 	node->blocks = stat.st_blocks;
 	node->num_of_links = stat.st_nlink;
 	node->size_in_bytes = stat.st_size;
@@ -28,7 +40,7 @@ static t_node		*stat_handler(t_node *node, unsigned short flags)
 	return (node);
 }
 
-void			parse_the_dir(t_node *parent, unsigned short flags,
+void				parse_the_dir(t_node *parent, unsigned short flags,
 									char *printing_mod)
 {
 	DIR				*dir;
@@ -36,7 +48,7 @@ void			parse_the_dir(t_node *parent, unsigned short flags,
 	t_node			*curr;
 
 	if (!parent)
-		return;
+		return ;
 	if ((dir = opendir(parent->path)))
 	{
 		while ((dirent = readdir(dir)))
@@ -57,7 +69,7 @@ void			parse_the_dir(t_node *parent, unsigned short flags,
 }
 
 static void			init_dirs_files_invalids(t_facade *facade, char **argv,
-								 			unsigned short flags)
+											unsigned short flags)
 {
 	struct stat		stt;
 
@@ -93,7 +105,9 @@ void				dir_parser_facade(char **argv, unsigned short flags)
 	print_one_column((facade.files_parent).content, flags);
 	if (facade.files_parent.content)
 		printing_mod = W_LINE_BREAK;
-	else if (!facade.files_parent.content && facade.dirs && !(facade.dirs->next))
+	else if (!facade.files_parent.content
+			&& facade.dirs
+			&& !(facade.dirs->next))
 		printing_mod = WO_DIR_DESCRIPTION;
 	else
 		printing_mod = WO_LINE_BREAK;

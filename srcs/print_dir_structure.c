@@ -6,13 +6,14 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 16:41:27 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 16:43:01 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 13:14:21 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		print_dir(t_node *parent, unsigned short flags, char *printing_mod)
+void			print_dir(t_node *parent, unsigned short flags,
+							char *printing_mod)
 {
 	if (parent->status == DUMMY_DIR)
 		return ;
@@ -40,9 +41,9 @@ void		print_dir(t_node *parent, unsigned short flags, char *printing_mod)
 //		print_by_columns(parent);
 }
 
-void		print_invalids(t_node *head)
+void			print_invalids(t_node *head)
 {
-	t_node	*curr;
+	t_node		*curr;
 
 	if (head)
 	{
@@ -56,9 +57,9 @@ void		print_invalids(t_node *head)
 }
 
 void			recursive_dir_printing(struct s_node *dirs_head,
-											  unsigned short flags, char *printing_mod)
+									unsigned short flags, char *printing_mod)
 {
-	t_node			*tmp;
+	t_node		*tmp;
 
 	tmp = dirs_head;
 	while (tmp)
@@ -74,14 +75,15 @@ void			recursive_dir_printing(struct s_node *dirs_head,
 		}
 		while (!tmp->next && (tmp = tmp->parent))
 			del_line_of_nodes(&(tmp->content));
-		if (tmp) tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
 }
 
 void			simple_dir_printing(struct s_node *dirs_head,
-										   unsigned short flags, char *printing_mod)
+									unsigned short flags, char *printing_mod)
 {
-	t_node			*tmp;
+	t_node		*tmp;
 
 	tmp = dirs_head;
 	while (tmp)
@@ -91,4 +93,3 @@ void			simple_dir_printing(struct s_node *dirs_head,
 		tmp = tmp->next;
 	}
 }
-

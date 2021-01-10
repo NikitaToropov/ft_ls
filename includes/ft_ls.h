@@ -6,7 +6,7 @@
 /*   By: cmissy <cmissy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/20 14:13:50 by cmissy            #+#    #+#             */
-/*   Updated: 2021/01/08 18:45:35 by cmissy           ###   ########.fr       */
+/*   Updated: 2021/01/10 13:46:07 by cmissy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define MEM_CHECK(x) if (!x) exit(2)
 
 /**
- * Flags error status. TODO fix comments for norminet
+ * Flags error status.
  */
 # define ILLEGAL_OPTION			1
 
@@ -49,7 +49,7 @@
 # define FALSE					0
 # define MORE					1
 # define LESS					-1
-# define SIX_MONTHS				15770000 //todo fix later
+# define SIX_MONTHS				15770000
 # define SYM_LINK_ARROW			" -> "
 # define DEFAULT_BUFF_SIZE		16
 
